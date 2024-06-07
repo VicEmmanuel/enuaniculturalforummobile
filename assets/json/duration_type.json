@@ -1,0 +1,25 @@
+{
+  "DurationType":[
+
+    {
+      "name":"Bunchpay 1",
+      "key":"yearly"
+
+    },
+    {
+      "name":"Bunchpay 2",
+      "key":"monthly"
+
+
+    },
+    {
+      "name":"Bunchpay 3",
+      "key":"daily"
+    },
+    {
+      "name":"Bunchpay 4",
+      "key":"weekly"
+    }
+  ]
+
+}

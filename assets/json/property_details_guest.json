@@ -1,0 +1,54 @@
+{
+  "propertyDetails":[
+
+    {
+      "id":"Vacant Land",
+      "logo": "assets/images/vacantland.png",
+      "key": "vacant_land",
+      "subText": "Underdeveloped land for\nfuture construction"
+
+    },
+    {
+      "id":"Residential",
+      "logo": "assets/images/city.png",
+      "key": "residential",
+      "subText": "Single-family homes,\napartments,\nTownhouses"
+
+    },
+    {
+      "id":"Commercial",
+      "logo": "assets/images/commercial.png",
+      "key": "commercial",
+      "subText": "office buildings, retail\nspaces, industrial\nproperties"
+
+    },
+    {
+      "id":"Agricultural",
+      "logo": "assets/images/agricultural.png",
+      "key": "agricultural",
+      "subText": "Agricultural or rural\nproperties for farming\nor ranching"
+
+    },
+    {
+      "id":"Special Purpose",
+      "logo": "assets/images/special_purpose.png",
+      "key": "special_purpose",
+      "subText": "Unique properties like\nhotels, resorts, or\nreligious institutions"
+
+    },
+    {
+      "id":"New Construction",
+      "logo": "assets/images/new_construction.png",
+      "key": "new_construction",
+      "subText": "Newly built properties\nthat has not been\npreviously occupied"
+
+    },
+    {
+      "id":"Waterfront",
+      "logo": "assets/images/waterfront.png",
+      "key": "waterfront",
+      "subText": "Properties located\naround lakes, rivers or\noceans"
+
+    }
+  ]
+}

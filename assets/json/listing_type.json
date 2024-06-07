@@ -1,0 +1,21 @@
+{
+  "ListingType":[
+
+    {
+      "name":"Rent",
+      "id":"rent"
+
+    },
+    {
+      "name":"Lease",
+      "id":"lease"
+
+
+    },
+    {
+      "name":"Sale",
+      "id":"sale"
+    }
+  ]
+
+}

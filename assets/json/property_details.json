@@ -1,0 +1,29 @@
+{
+  "propertyDetails":[
+
+    {
+      "name":"En-suite",
+      "id":"ensuite",
+      "logo": "assets/images/bedsitter_icon.png"
+
+    },
+    {
+      "name":"Flat",
+      "id":"flat",
+      "logo": "assets/images/commercial.png"
+
+    },
+    {
+      "name":"Shop",
+      "id":"shop",
+      "logo": "assets/images/commercial.png"
+
+    },
+    {
+      "name":"Duplex",
+      "id":"duplex",
+      "logo": "assets/images/duplex_icon.png"
+    }
+  ]
+
+}
