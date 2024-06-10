@@ -190,10 +190,11 @@ const lastName = 'Last Name';
 const emailExample = 'e.g emailaddress@gmail.com';
 const confirmPasswordText = 'Confirm Password';
 const homeText = 'Home';
-const historyText = 'History';
-const profileText = 'Profile';
+const categoryText = 'Category';
 
 const settingsText ='Settings';
+const somethingWentWrong ='somethingWentWrong';
+const checkErrorLogs ='checkErrorLogs';
 const beneficiariesText ='Beneficiaries';
 const userDetailsText ='User Details';
 const changePasswordText ='Change Password';

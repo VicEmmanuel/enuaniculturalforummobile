@@ -157,7 +157,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                 backgroundColor: Colors.white,
               
                 selectedItemColor: AppColors.kPrimary1,
-                unselectedItemColor: AppColors.kBlack4.withOpacity(0.4),
+                unselectedItemColor: AppColors.kBlack4,
                 selectedLabelStyle: TextStyle(
                   fontFamily: monaSansFont,
                   fontSize: 12.sp,
@@ -166,7 +166,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                 unselectedLabelStyle: TextStyle(
                   fontFamily: monaSansFont,
                   fontSize: 12.sp,
-                  color: AppColors.kBlack4.withOpacity(0.4),
+                  color: AppColors.kBlack4,
                   fontWeight: FontWeight.w600,
                 ),
                 items: [
@@ -188,7 +188,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                               color: dashProvider.currentIndex == 1?AppColors.kPrimary1:null,
 
                             ),
-                            label: historyText),
+                            label: categoryText),
                         BottomNavigationBarItem(
                             icon: ImageView.svg(
                                AppImages.moreIcon,
@@ -197,7 +197,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                               color: dashProvider.currentIndex == 2?AppColors.kPrimary1:null,
 
                             ),
-                            label: profileText),
+                            label: moreText),
               
                       ]
                    ,

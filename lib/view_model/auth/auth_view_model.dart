@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 
+import 'package:enuaniculturalforummobile/view/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rebirth/rebirth.dart';
@@ -203,84 +204,85 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<void> userLogin(BuildContext context) async {
-  //   try {
-  //     _buttonLoginState = CustomButtonState(
-  //       buttonState: ButtonState.loading,
-  //       text: login,
-  //     );
-  //     notifyListeners();
-  //     await authService
-  //         .signInAdmin(
-  //       email: _loginEmailController.text.toLowerCase(),
-  //       password: _loginPwdController.text,
-  //     )
-  //         .then((value) async {
-  //
-  //       if (value != null) {
-  //         if (value['status'].toString() == 'true') {
-  //
-  //           logger.t(value['data']['token'].toString());
-  //           _buttonLoginState = CustomButtonState(
-  //             buttonState: ButtonState.idle,
-  //             text: login,
-  //           );
-  //
-  //           if (value['data']['verifyOtp'].toString() == '1') {
-  //             DummyData.emailAddress = _loginEmailController.text.toString();
-  //             notifyListeners();
-  //             navigatePush(
-  //                 context,
-  //                 EmailVerificationScreen(
-  //                   title: verifyEmail,
-  //                   subTitle: enterEmailCode,
-  //                   email: _loginEmailController.text.toString(),
-  //                 ));
-  //           } else {
-  //             showToast(
-  //               msg: 'Login successful',
-  //               isError: false,
-  //             );
-  //
-  //             DummyData.emailAddress = _loginEmailController.text;
-  //             DummyData.password = _loginPwdController.text;
-  //             await saveUserEmail(_loginEmailController.text);
-  //             await getUserEmail();
-  //             await saveAccessToken(value['data']['token'].toString());
-  //             await getAccessToken();
-  //             await saveAppTme();
-  //             await saveUserPassword(_loginPwdController.text);
-  //             await getUserPassword();
-  //
-  //             await ProfileViewModel().loadData(context).then((value) async {
-  //               if (value != null) {
-  //                 DummyData.username = value.firstName.toString();
-  //                 DummyData.lastname = value.lastName.toString();
-  //                 await navigateReplace(context, const DashBoardScreen());
-  //               }
-  //             });
-  //             notifyListeners();
-  //           }
-  //         }
-  //       }
-  //     }).whenComplete(() {
-  //       _buttonLoginState = CustomButtonState(
-  //         buttonState: ButtonState.idle,
-  //         text: login,
-  //       );
-  //       notifyListeners();
-  //     });
-  //   } catch (e, s) {
-  //     showToast(
-  //       msg: somethingWentWrong,
-  //       isError: true,
-  //     );
-  //     logger
-  //       ..i(checkErrorLogs)
-  //       ..e(s);
-  //   }
-  // }
-  //
+  Future<void> userLogin(BuildContext context) async {
+    try {
+      _buttonLoginState = CustomButtonState(
+        buttonState: ButtonState.loading,
+        text: login,
+      );
+      notifyListeners();
+      await authService
+          .signInAdmin(
+        email: _loginEmailController.text.toLowerCase(),
+        password: _loginPwdController.text,
+      )
+          .then((value) async {
+
+        if (value != null) {
+          if (value['status'].toString() == 'true') {
+
+            logger.t(value['data']['token'].toString());
+            _buttonLoginState = CustomButtonState(
+              buttonState: ButtonState.idle,
+              text: login,
+            );
+
+            if (value['data']['verifyOtp'].toString() == '1') {
+              DummyData.emailAddress = _loginEmailController.text.toString();
+              notifyListeners();
+              // navigatePush(
+              //     context,
+              //     EmailVerificationScreen(
+              //       title: verifyEmail,
+              //       subTitle: enterEmailCode,
+              //       email: _loginEmailController.text.toString(),
+              //     ));
+            } else {
+              showToast(
+                msg: 'Login successful',
+                isError: false,
+              );
+
+              DummyData.emailAddress = _loginEmailController.text;
+              DummyData.password = _loginPwdController.text;
+              await saveUserEmail(_loginEmailController.text);
+              await getUserEmail();
+              await saveAccessToken(value['data']['token'].toString());
+              await getAccessToken();
+              await saveAppTme();
+              await saveUserPassword(_loginPwdController.text);
+              await getUserPassword();
+              await navigateReplace(context, const DashBoardScreen());
+
+              // await ProfileViewModel().loadData(context).then((value) async {
+              //   if (value != null) {
+              //     DummyData.username = value.firstName.toString();
+              //     DummyData.lastname = value.lastName.toString();
+              //     await navigateReplace(context, const DashBoardScreen());
+              //   }
+              // });
+              notifyListeners();
+            }
+          }
+        }
+      }).whenComplete(() {
+        _buttonLoginState = CustomButtonState(
+          buttonState: ButtonState.idle,
+          text: login,
+        );
+        notifyListeners();
+      });
+    } catch (e, s) {
+      showToast(
+        msg: somethingWentWrong,
+        isError: true,
+      );
+      logger
+        ..i(checkErrorLogs)
+        ..e(s);
+    }
+  }
+
   // Future<void> callForgotPwd(BuildContext context) async {
   //   try {
   //     _buttonForgotPWdState = CustomButtonState(
@@ -517,7 +519,7 @@ class AuthViewModel extends ChangeNotifier {
   //     }
   //   }
   // }
-  //
+
   // Future<void> resetPwd(
   //   context,
   // ) async {
@@ -582,8 +584,8 @@ class AuthViewModel extends ChangeNotifier {
   //       ..e(s);
   //   }
   // }
-  //
-  //
+
+
   // Future<void> changePwd(
   //     context,
   //     ) async {

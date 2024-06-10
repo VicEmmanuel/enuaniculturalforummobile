@@ -22,7 +22,9 @@ class ApiConstants {
       scheme: scheme, host: host, path: '$version/$authPath/$userPath/signup');
 
   Uri get loginUri => Uri(
-      scheme: scheme, host: host, path: '$version/$authPath/$userPath/signin');
+      scheme: scheme, host: host, path: '/api/login');
+  // Uri get loginUri => Uri(
+  //     scheme: scheme, host: host, path: '$version/$authPath/$userPath/signin');
 
   Uri get sendOTPUri => Uri(
       scheme: scheme,

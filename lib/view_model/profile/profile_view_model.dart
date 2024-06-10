@@ -90,31 +90,6 @@
 //   File? intlPassportImageFront;
 //   File? intlPassportImageBack;
 //
-//   List<String> identificationType = [
-//     bvn,
-//     driversLicense,
-//     nin,
-//     internationalPassport,
-//   ];
-//
-//   List<Map<String, dynamic>> identificationTypeNew = [
-//     {
-//       'title': bvn,
-//       'id': bvnCamelCase,
-//     },
-//     {
-//       'title': driversLicense,
-//       'id': driversLicenseCamelCase,
-//     },
-//     {
-//       'title': nin,
-//       'id': ninCamelCase,
-//     },
-//     {
-//       'title': internationalPassport,
-//       'id': intlPassportCamelCase,
-//     },
-//   ];
 //
 //   String? _documentType;
 //   String? get documentType => _documentType;

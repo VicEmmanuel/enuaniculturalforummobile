@@ -46,9 +46,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 SizedBox(
                   height: 32.h,
                 ),
-                const CustomTextField(
+                 CustomTextField(
                   fieldLabel: phoneNumberText,
                   hint: phoneDigitsHintText,
+                  controller: provider.loginEmailController,
                 ),
                 SizedBox(
                   height: 12.h,
@@ -56,6 +57,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 CustomTextField(
                   fieldLabel: password,
                   hint: enterPasswordText,
+
                   // focusNode: passwordFocusNode,
                   password: true,
                   validator: (value) =>
@@ -89,7 +91,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 DefaultButtonMain(
                   text: logIn,
                   onPressed: () {
-                    navigatePush(context, const DashBoardScreen());
+                    provider.userLogin(context);
+                    // navigatePush(context, const DashBoardScreen());
                   },
                 ),
                 SizedBox(height: 62.h),
