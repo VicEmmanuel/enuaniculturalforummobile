@@ -51,58 +51,60 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 SizedBox(
                   height: 32.h,
                 ),
-                const CustomTextField(
-                  fieldLabel: firstName,
-                  hint: firstName,
-                ),
-                SizedBox(
-                  height: 12.h,
-                ),
-                const CustomTextField(
-                  fieldLabel: lastName,
-                  hint: lastName,
-                ),
-                SizedBox(
-                  height: 12.h,
-                ),
-                const CustomTextField(
-                  fieldLabel: emailAddressText,
-                  hint: emailExample,
-                ),
-                SizedBox(
-                  height: 12.h,
-                ),
-                const CustomTextField(
-                  fieldLabel: phoneNumberText,
-                  hint: phoneDigitsHintText,
-                ),
-                SizedBox(
-                  height: 12.h,
-                ),
-                PasswordValidatedFields(
-                  textEditingController: registrationProvider.registerPwdController,
-                  obscureInput: registrationProvider.obscurePasswordText,
-                  confirmPasswordWidget: CustomTextField(
-                    fieldLabel: confirmPasswordText,
-                    hint: enterPasswordText,
 
-                    controller: registrationProvider.registerConfirmPwdController,
-                    password: true,
-                    validator: (value) => Validators().validateConfirmPassword(
-                      registrationProvider.registerPwdController.text,
-                      registrationProvider.registerConfirmPwdController.text,
-                    ),
-                    obscureInput: registrationProvider.obscureConfirmPwdText,
-                    onObscureText: registrationProvider.toggleConfirmPwdVisibility,
+                Form(
+                  key: registrationProvider.registrationFormKey,
+                  child: Column(
+                    children: [
+                       CustomTextField(
+                        fieldLabel: fullName,
+                        hint: fullName,
+                        controller: registrationProvider.firstNameController,
+                        validator: (value) =>
+                            Validators().validateEmptyTextField(value),
+                      ),
+                      SizedBox(
+                        height: 12.h,
+                      ),
+                       CustomTextField(
+                        fieldLabel: emailAddressText,
+                        hint: emailExample,
+                        validator: (value) => Validators().validateEmail(value),
+                      ),
+
+                      SizedBox(
+                        height: 12.h,
+                      ),
+                      PasswordValidatedFields(
+                        textEditingController: registrationProvider.registerPwdController,
+                        obscureInput: registrationProvider.obscurePasswordText,
+                        confirmPasswordWidget: CustomTextField(
+                          fieldLabel: confirmPasswordText,
+                          hint: enterPasswordText,
+
+                          controller: registrationProvider.registerConfirmPwdController,
+                          password: true,
+                          validator: (value) => Validators().validateConfirmPassword(
+                            registrationProvider.registerPwdController.text,
+                            registrationProvider.registerConfirmPwdController.text,
+                          ),
+                          obscureInput: registrationProvider.obscureConfirmPwdText,
+                          onObscureText: registrationProvider.toggleConfirmPwdVisibility,
+                        ),
+                        onObscureText: registrationProvider.togglePwdVisibility, fieldLabel: password,
+                      ),
+                    ],
                   ),
-                  onObscureText: registrationProvider.togglePwdVisibility, fieldLabel: password,
                 ),
+
 
                 // SizedBox(height: 2.h),
                 DefaultButtonMain(
                   text: createAccountText,
+                  buttonState: registrationProvider.buttonRegisterState!.buttonState,
                   onPressed: () {
-                    navigatePush(context, const DashBoardScreen());
+                    registrationProvider.userRegistration(context);
+                    // navigatePush(context, const DashBoardScreen());
                   },
                 ),
                 SizedBox(height: 10.h),

@@ -20,10 +20,11 @@ class RegistrationViewModel extends ChangeNotifier {
   final TextEditingController _registerPwdController = TextEditingController();
   final TextEditingController _registerConfirmPwdController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _refCodeController = TextEditingController();
   CustomButtonState _buttonRegisterState = CustomButtonState(
-    buttonState: ButtonState.disabled, text: createAccount,);
+    buttonState: ButtonState.idle, text: createAccount,);
 
   bool _obscurePasswordText = true;
   bool _obscureConfirmPwdText = true;
@@ -36,6 +37,7 @@ class RegistrationViewModel extends ChangeNotifier {
   TextEditingController get registerPwdController => _registerPwdController;
   TextEditingController get registerConfirmPwdController => _registerConfirmPwdController;
   TextEditingController get  firstNameController => _firstNameController;
+  TextEditingController get  fullNameController => _fullNameController;
   TextEditingController get lastNameController => _lastNameController;
   TextEditingController get refCodeController => _refCodeController;
   CustomButtonState? get buttonRegisterState => _buttonRegisterState;
@@ -55,28 +57,28 @@ class RegistrationViewModel extends ChangeNotifier {
     _obscureConfirmPwdText = !_obscureConfirmPwdText;
     notifyListeners();
   }
-  void  toggleCheckerVisibility() {
-      _isChecked = !_isChecked;
-      updateRegisterButtonState();
-      notifyListeners();
-    }
+  // void  toggleCheckerVisibility() {
+  //     _isChecked = !_isChecked;
+  //     updateRegisterButtonState();
+  //     notifyListeners();
+  //   }
 
-  void updateRegisterButtonState() {
-
-
-  if (_isChecked != true ) {
-    _buttonRegisterState = CustomButtonState(
-      buttonState: ButtonState.disabled,
-      text: login,
-    );
-  } else {
-    _buttonRegisterState = CustomButtonState(
-      buttonState: ButtonState.idle,
-      text: login,
-    );
-  }
-  notifyListeners();
-}
+//   void updateRegisterButtonState() {
+//
+//
+//   if (_isChecked != true ) {
+//     _buttonRegisterState = CustomButtonState(
+//       buttonState: ButtonState.disabled,
+//       text: login,
+//     );
+//   } else {
+//     _buttonRegisterState = CustomButtonState(
+//       buttonState: ButtonState.idle,
+//       text: login,
+//     );
+//   }
+//   notifyListeners();
+// }
 
 
 
@@ -98,9 +100,7 @@ Future<void> userRegistration(BuildContext context) async {
           .signUp(
           email: _registerEmailController.text,
           password: _registerPwdController.text,
-          firstName: _firstNameController.text,
-          lastName: _lastNameController.text,
-          referral: _refCodeController.text,
+          fullName: _fullNameController.text,
       )
           .then((value) async {
         if (value != null) {

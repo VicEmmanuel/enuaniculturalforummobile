@@ -18,6 +18,8 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final loginFormKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     var provider = ref.watch(authViewModel);
@@ -46,28 +48,38 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 SizedBox(
                   height: 32.h,
                 ),
-                 CustomTextField(
-                  fieldLabel: phoneNumberText,
-                  hint: phoneDigitsHintText,
-                  controller: provider.loginEmailController,
-                ),
-                SizedBox(
-                  height: 12.h,
-                ),
-                CustomTextField(
-                  fieldLabel: password,
-                  hint: enterPasswordText,
+                 Form(
+                   key: loginFormKey,
+                   child: Column(
+                     children: [
+                       CustomTextField(
+                        fieldLabel: emailAddressText,
+                        hint: emailExample,
+                        controller: provider.loginEmailController,
+                         validator: (value) =>
+                             Validators().validateEmptyTextField(value),
+                                       ),
+                       SizedBox(
+                         height: 12.h,
+                       ),
+                       CustomTextField(
+                         fieldLabel: password,
+                         hint: enterPasswordText,
 
-                  // focusNode: passwordFocusNode,
-                  password: true,
-                  validator: (value) =>
-                      Validators().validateEmptyTextField(value),
-                  controller: provider.loginPwdController,
-                  obscureInput: provider.loginObscurePass,
-                  onObscureText: provider.toggleLoginPwdVisibility,
+                         // focusNode: passwordFocusNode,
+                         password: true,
+                         validator: (value) =>
+                             Validators().validateEmptyTextField(value),
+                         controller: provider.loginPwdController,
+                         obscureInput: provider.loginObscurePass,
+                         onObscureText: provider.toggleLoginPwdVisibility,
 
-                  //onChanged: (value)=> provider.updateButtonState(),
-                ),
+                         //onChanged: (value)=> provider.updateButtonState(),
+                       ),
+                     ],
+                   ),
+                 ),
+
                 SizedBox(
                   height: 2.h,
                 ),
@@ -90,33 +102,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 SizedBox(height: 32.h),
                 DefaultButtonMain(
                   text: logIn,
+                  buttonState: provider.buttonLoginState!.buttonState,
                   onPressed: () {
-                    provider.userLogin(context);
+                    if (loginFormKey.currentState!.validate()) {
+                      loginFormKey.currentState!.save();
+                      provider.userLogin(context);
+                    }
                     // navigatePush(context, const DashBoardScreen());
                   },
                 ),
                 SizedBox(height: 62.h),
                 doNotHaveAccount(),
                 SizedBox(height: 30.h),
-                Center(
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pushAndRemoveUntil(
-                        // the new route
-                        MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                const GuestHomeScreen()),
-                        (Route route) => false,
-                      );
-                    },
-                    child: TextView(
-                      text: skipToAppText,
-                      color: AppColors.kPrimary1,
-                      decoration: TextDecoration.underline,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                )
+
               ],
             ),
           ),

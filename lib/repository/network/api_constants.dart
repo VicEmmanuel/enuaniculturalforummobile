@@ -19,7 +19,7 @@ class ApiConstants {
   final userPath = 'user';
 
   Uri get signUpUri => Uri(
-      scheme: scheme, host: host, path: '$version/$authPath/$userPath/signup');
+      scheme: scheme, host: host, path: 'api/register');
 
   Uri get loginUri => Uri(
       scheme: scheme, host: host, path: '/api/login');
@@ -160,8 +160,8 @@ class ApiConstants {
   Uri get validateCustomerBankAccountUri => Uri(
       scheme: scheme, host: host, path: '$version/payment/user/validate-bank');
 
-  Uri get fetchLandlordsBankAccountDetailsUri => Uri(
-      scheme: scheme, host: host, path: '$version/payment/user/bank-details');
+  Uri get fetchAllPostsUri => Uri(
+      scheme: scheme, host: host, path: '/api/get-all-posts');
   // Uri get sendFundToAnotherWalletUri => Uri(scheme: scheme, host: host, path: '$version/transaction/tenant/transfer');
 
   Uri get deleteBankAccountNumberUri => Uri(

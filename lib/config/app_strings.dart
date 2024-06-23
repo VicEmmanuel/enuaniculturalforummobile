@@ -187,6 +187,7 @@ const enterEmailAddressToReceivePasswordText = 'Enter your email address to rece
 
 const firstName = 'First Name';
 const lastName = 'Last Name';
+const fullName = 'Full Name';
 const emailExample = 'e.g emailaddress@gmail.com';
 const confirmPasswordText = 'Confirm Password';
 const homeText = 'Home';

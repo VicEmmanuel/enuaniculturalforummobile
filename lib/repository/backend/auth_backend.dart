@@ -19,18 +19,14 @@ class AuthBackend extends ApiService {
   Future<dynamic> signUp({
     required String email,
     required String password,
-    required String firstName,
-    required String lastName,
-    required String referral,
+    required String fullName,
   }) async {
     return postMth(
       signUpUri,
       headers: apiHeader,
       body: {
-        'firstName': firstName,
-        'lastName': lastName,
+        'name': fullName,
         'email': email,
-        'referral': referral,
         'password': password,
       },
     );
