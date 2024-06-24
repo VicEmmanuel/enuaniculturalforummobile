@@ -28,7 +28,13 @@ class BlogDetailsScreen extends StatefulWidget {
 class _BlogDetailsScreenState extends State<BlogDetailsScreen> {
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     return Scaffold(
+      appBar: AppBars.mainAppBar(
+        context,
+        backgroundColor: theme.scaffoldBackgroundColor,
+        arrowBackColor: theme.colorScheme.primary,
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.w),
