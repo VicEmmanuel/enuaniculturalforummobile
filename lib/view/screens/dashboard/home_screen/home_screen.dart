@@ -10,6 +10,7 @@ import 'package:enuaniculturalforummobile/view/components/guest_screen_component
 import 'package:enuaniculturalforummobile/view/components/guest_screen_components/quick_menu_button.dart';
 import 'package:enuaniculturalforummobile/view/components/guest_screen_components/ussd_card.dart';
 import 'package:enuaniculturalforummobile/view/components/image_view.dart';
+import 'package:enuaniculturalforummobile/view/components/rich_editor_screen.dart';
 import 'package:enuaniculturalforummobile/view/screens/dashboard/home_screen/blog_details_screen.dart';
 import 'package:enuaniculturalforummobile/view_model/payment_veiw_model/payment_view_model.dart';
 import 'package:enuaniculturalforummobile/view_model/posts/post_view_model.dart';
@@ -95,7 +96,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               elevation: 0,
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(5))),
-              onPressed: () async {},
+              onPressed: () async {
+                // navigatePush(context, RichEditorScreen());
+              },
               child: const Icon(
                 Icons.add,
                 color: Colors.white,

@@ -61,6 +61,8 @@ dependencies:
   shimmer: ^3.0.0
   flutter_html: any
   carousel_slider: any
+  rich_editor: ^0.0.8
+#  flutter_quill: any
 
 dev_dependencies:
   flutter_test:
