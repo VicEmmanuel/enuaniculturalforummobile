@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:enuaniculturalforummobile/src/components.dart';
 import 'package:enuaniculturalforummobile/src/config.dart';
+import 'package:enuaniculturalforummobile/src/utils.dart';
 import 'package:enuaniculturalforummobile/view/components/app_bars.dart';
 import 'package:enuaniculturalforummobile/view_model/posts/post_view_model.dart';
 import 'package:flutter/material.dart';
@@ -108,6 +110,48 @@ class _QuillEditorWidgetState extends ConsumerState<QuillEditorWidget> {
                   locale: Locale('en'),
                 ),
               ),
+            ),
+
+          ),
+          SizedBox(
+            // width: screenWidth.w,
+            height: 50.h,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                DefaultButtonMain(
+                  color: AppColors.kWhite,
+                  borderColor: AppColors.kTextBlack,
+                  borderRadius: 38.r,
+                  height: 48.h,
+                  width: 92.w,
+                  fontFamily: monaSansFont,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                  textColor: AppColors.kTextBlack,
+                  text: back,
+                  onPressed: () {
+                    setState(() {
+                      navigateBack(context);
+                    });
+                  },
+                ),
+                DefaultButtonMain(
+                    color: AppColors.kPrimary1,
+                    borderRadius: 38.r,
+                    height: 48.h,
+                    width: 110.w,
+                    fontFamily: monaSansFont,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    textColor: AppColors.kWhite,
+                    text: 'Make Post',
+                    onPressed: () {
+                      // ref.watch(listingViewModel).clearData();
+                      ref.watch(postViewModel).createNewPost(context);
+                      // setState(() {});
+                    }),
+              ],
             ),
           )
         ],

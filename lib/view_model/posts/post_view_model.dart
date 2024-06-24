@@ -11,6 +11,7 @@ import 'package:enuaniculturalforummobile/model/response/post_response_model.dar
 import 'package:enuaniculturalforummobile/repository/backend/post_backend.dart';
 import 'package:enuaniculturalforummobile/src/utils.dart';
 import 'package:enuaniculturalforummobile/view/components/rich_editor_screen.dart';
+import 'package:enuaniculturalforummobile/view/components/success_screen.dart';
 import 'package:enuaniculturalforummobile/view/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:http/http.dart' as http;
@@ -42,17 +43,14 @@ class PostViewModel extends ChangeNotifier {
   final TextEditingController _aNewAmenityController = TextEditingController();
   TextEditingController get aNewAmenityController => _aNewAmenityController;
 
-
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _authorController = TextEditingController();
 
   TextEditingController get titleController => _titleController;
   TextEditingController get authorController => _authorController;
 
-
   final QuillController _quillController = QuillController.basic();
   QuillController get quillController => _quillController;
-
 
   bool isGettingPosts = true;
   bool isGettingTenants = true;
@@ -204,8 +202,8 @@ class PostViewModel extends ChangeNotifier {
   String? selectedItem;
 
   void backBtnControl(
-      BuildContext context,
-      ) {
+    BuildContext context,
+  ) {
     if (_currentListIndex > 0) {
       _currentListIndex--;
     } else {
@@ -214,71 +212,61 @@ class PostViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-
-
   ///Method to change page for guest
   void pageChange(index) {
     _currentListIndex = index;
     notifyListeners();
   }
 
-
   ///Method to control next button f
   nextBtnControl(
-      BuildContext context,
-      ) async {
+    BuildContext context,
+  ) async {
     switch (_currentListIndex) {
-
       case 0:
         if (titleController.text.isEmpty) {
           showToast(msg: 'Enter Post Title', isError: true);
-        }
-        else if (authorController.text.isEmpty) {
+        } else if (authorController.text.isEmpty) {
           showToast(msg: 'Enter Authors Name', isError: true);
         } else if (selectedItem == null) {
           showToast(msg: 'Select Category', isError: true);
-        }  else if (propertyImageList.isEmpty){
+        } else if (propertyImageList.isEmpty) {
           showToast(msg: 'Select Image', isError: true);
-        }
-        else {
+        } else {
           // _currentListIndex++;
-          return await navigatePush(context,  QuillEditorWidget());
+          return await navigatePush(context, QuillEditorWidget());
         }
-    // case 2:
-    //   if (pickUpDate != null
-    //       && pickUpTime != null
-    //   ) {
-    //     _currentListIndex++;
-    //   } else {
-    //     showToast(msg: 'Select date and time', isError: true);
-    //   }
+      // case 2:
+      //   if (pickUpDate != null
+      //       && pickUpTime != null
+      //   ) {
+      //     _currentListIndex++;
+      //   } else {
+      //     showToast(msg: 'Select date and time', isError: true);
+      //   }
       default:
-        if (_quillController.toString().isEmpty
-        ) {
+        if (_quillController.toString().isEmpty) {
           showToast(msg: 'Invalid bank account number', isError: true);
-
-        }
-        else {
-
-          return await navigatePush(context,  QuillEditorWidget());
+        } else {
+          return await navigatePush(context, QuillEditorWidget());
         }
 
-    // _currentListIndex++;
-    // _currentListIndex++;
-    //   case 5:
-    //     if (propertyImageList.isNotEmpty) {
-    //       _currentListIndex++;
-    //     } else {
-    //       showToast(msg: addImage, isError: true);
-    //     }
-    // default:
-    //   if (propertyImageList.isNotEmpty) {
-    //     return await navigatePush(context, const PublishRecycleScreen());
-    //     // break;
-    //   } else {
-    //     showToast(msg: 'Add Image', isError: true);
-    //   }
-    // return navigatePush(context, const PublishScreen());
+      // _currentListIndex++;
+      // _currentListIndex++;
+      //   case 5:
+      //     if (propertyImageList.isNotEmpty) {
+      //       _currentListIndex++;
+      //     } else {
+      //       showToast(msg: addImage, isError: true);
+      //     }
+      // default:
+      //   if (propertyImageList.isNotEmpty) {
+      //     return await navigatePush(context, const PublishRecycleScreen());
+      //     // break;
+      //   } else {
+      //     showToast(msg: 'Add Image', isError: true);
+      //   }
+      // return navigatePush(context, const PublishScreen());
     }
 
     notifyListeners();
@@ -339,8 +327,8 @@ class PostViewModel extends ChangeNotifier {
   }
 
   Future<void> getAllCategories(
-      BuildContext context,
-      ) async {
+    BuildContext context,
+  ) async {
     try {
       await postService.fetchAllCategories().then((value) async {
         if (value != null) {
@@ -369,6 +357,76 @@ class PostViewModel extends ChangeNotifier {
         }
       }).whenComplete(() {
         // isGettingPosts = false;
+        notifyListeners();
+      });
+    } catch (e, s) {
+      logger
+        ..i(checkErrorLogs)
+        ..e(s);
+    }
+  }
+
+  Future<void> createNewPost(BuildContext context) async {
+    List<String> trimmedAmenityValues = trimList(amenityValues);
+    isCreatingPropertiesListings = true;
+    logger.f(feesValues);
+    // navigatePush(context,
+    //     const SuccessLoadingScreen(informationText: verifyingProperty));
+    notifyListeners();
+    try {
+      await postService
+          .createNewPost(
+        images: propertyImageList,
+        title: _titleController.text,
+        description: 'jj',
+        // description: jsonEncode(quillController.document.toDelta().toJson()),
+        // images: propertyImageList.toString(),
+        category_type: selectedItem.toString(),
+        author: _authorController.text,
+      )
+          .then((value) async {
+        if (value != null) {
+          final decodedResponse = jsonDecode(value.toString());
+
+          if (decodedResponse['status'].toString() == 'success') {
+            showToast(
+              msg: decodedResponse['message'].toString(),
+              isError: false,
+            );
+            isCreatingPropertiesListings = false;
+            getAllPosts(context);
+            // AwesomeNotifications().createNotification(
+            //   content: NotificationContent(
+            //       id: Random().nextInt(200),
+            //       channelKey: "basic_channel",
+            //       title: "Recycle order!",
+            //       color: AppColors.kPrimary1,
+            //       notificationLayout: NotificationLayout.BigText,
+            //       body:
+            //           "Your recycle order has been placed and being processed.\nItem: $selectedItem"),
+            // );
+            // SubscriptionViewModel().getNotificationConfirmation(context);
+            await navigateReplace(
+                context,
+                const SuccessScreen(
+                    infoText: 'Your Order has been Placed',
+                    newPage: DashBoardScreen(),
+                    navigateButtonText: continueText));
+
+            // await clearData();
+            notifyListeners();
+          } else {
+            showToast(
+              msg: decodedResponse['message'].toString(),
+              isError: true,
+            );
+            // navigateBack(context);
+            isCreatingPropertiesListings = false;
+            notifyListeners();
+          }
+        }
+      }).whenComplete(() {
+        isCreatingPropertiesListings = false;
         notifyListeners();
       });
     } catch (e, s) {
@@ -527,7 +585,7 @@ class PostViewModel extends ChangeNotifier {
   pickMultipleImage() async {
     final picker = ImagePicker();
     final pickedFile =
-    await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
     notifyListeners();
     if (pickedFile != null) {
       // _image = File(pickedFile.path);

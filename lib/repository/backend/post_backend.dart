@@ -259,6 +259,49 @@ class PostsBackend extends ApiService {
       headers: apiHeaderWithToken,
     );
   }
+
+
+  Future<dynamic> createNewPost(
+      {
+        // required File image,
+        required List<File?>? images,
+        required String title,
+        required String description,
+        // required String image,
+        required String category_type,
+        required String author,
+      }) async {
+    List<MultipartFile>? fileItems = [];
+
+    if (images != null) {
+      for (File? file in images) {
+        if (file != null) {
+          String fileName = file.path.split('/').last;
+          fileItems.add(await MultipartFile.fromFile(
+            file.path,
+            filename: fileName,
+          ));
+        }
+      }
+    }
+
+    return uploadMth(
+      createNewPostUri,
+      data: FormData.fromMap({
+        'title': 'nh',
+        // 'title': title.trim(),
+        // "description": description,
+        "description": 'hjnkm',
+        'author': 'jpojo',
+        // 'author': author.trim(),
+        'category_type': 'iji',
+        'image': fileItems[0]
+        // 'category_type': category_type.trim(),
+        // 'image': fileItems[0]
+      }),
+      headers: apiHeaderWithToken,
+    );
+  }
 }
 
 
