@@ -9,6 +9,7 @@ class AppImages {
   static const logOutSetting = '${_baseUrl}logoutsetting.png';
   static const successImage = '${_baseUrl}success_img.png';
   static const emptyListIcon = '${_baseUrl}emptyList.png';
+  static const dropDown = '${_baseUrl}dropdown.png';
   static const logo = '${_baseUrl}enuani.jpg';
   // static const logo = '${_baseUrl}logo2.png';
   static const logoLoader = '${_baseUrl}bpay.png';

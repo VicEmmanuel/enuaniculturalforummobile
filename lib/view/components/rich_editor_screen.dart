@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:enuaniculturalforummobile/src/config.dart';
+import 'package:enuaniculturalforummobile/view/components/app_bars.dart';
 import 'package:enuaniculturalforummobile/view_model/posts/post_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
@@ -68,7 +69,14 @@ class _QuillEditorWidgetState extends ConsumerState<QuillEditorWidget> {
   @override
   Widget build(BuildContext context) {
     var postController = ref.watch(postViewModel);
+    var theme = Theme.of(context);
     return Scaffold(
+      backgroundColor: Colors.white,
+        appBar: AppBars.mainAppBar(
+          context,
+          backgroundColor: Colors.white,
+          arrowBackColor: theme.colorScheme.primary,
+        ),
         body: SafeArea(
       child: Column(
         children: [

@@ -20,7 +20,7 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
     const PostInfoScreen(),
     // const ItemScreen(),
     // const DateTimeScreen(),
-     QuillEditorWidget(),
+    //  QuillEditorWidget(),
     // const ImageScreen(),
     // const PickDateScreen(),
 
@@ -34,10 +34,10 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
     var postProvider = ref.watch(postViewModel);
 
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: Colors.white,
       appBar: AppBars.mainAppBar(
         context,
-        backgroundColor: theme.scaffoldBackgroundColor,
+        backgroundColor: Colors.white,
         arrowBackColor: theme.colorScheme.primary,
       ),
       body: SafeArea(
@@ -64,7 +64,7 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
                         height: 15.h,
                         // width: screenWidth.w,
                         child: StepProgressIndicator(
-                          totalSteps: 2,
+                          totalSteps: 1,
                           currentStep: postProvider.currentListIndex + 1,
                           selectedColor: AppColors.kPrimary1,
                           unselectedColor: AppColors.kAsh300,

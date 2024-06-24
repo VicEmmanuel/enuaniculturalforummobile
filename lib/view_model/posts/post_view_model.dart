@@ -10,6 +10,7 @@ import 'package:enuaniculturalforummobile/model/response/local_response/category
 import 'package:enuaniculturalforummobile/model/response/post_response_model.dart';
 import 'package:enuaniculturalforummobile/repository/backend/post_backend.dart';
 import 'package:enuaniculturalforummobile/src/utils.dart';
+import 'package:enuaniculturalforummobile/view/components/rich_editor_screen.dart';
 import 'package:enuaniculturalforummobile/view/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:http/http.dart' as http;
@@ -40,6 +41,13 @@ class PostViewModel extends ChangeNotifier {
 
   final TextEditingController _aNewAmenityController = TextEditingController();
   TextEditingController get aNewAmenityController => _aNewAmenityController;
+
+
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _authorController = TextEditingController();
+
+  TextEditingController get titleController => _titleController;
+  TextEditingController get authorController => _authorController;
 
 
   final QuillController _quillController = QuillController.basic();
@@ -222,13 +230,19 @@ class PostViewModel extends ChangeNotifier {
     switch (_currentListIndex) {
 
       case 0:
-        if (selectedItem == null) {
-          showToast(msg: 'Select Recycle Item', isError: true);
+        if (titleController.text.isEmpty) {
+          showToast(msg: 'Enter Post Title', isError: true);
+        }
+        else if (authorController.text.isEmpty) {
+          showToast(msg: 'Enter Authors Name', isError: true);
+        } else if (selectedItem == null) {
+          showToast(msg: 'Select Category', isError: true);
         }  else if (propertyImageList.isEmpty){
-          showToast(msg: 'Add Recycle Image', isError: true);
+          showToast(msg: 'Select Image', isError: true);
         }
         else {
-          _currentListIndex++;
+          // _currentListIndex++;
+          return await navigatePush(context,  QuillEditorWidget());
         }
     // case 2:
     //   if (pickUpDate != null
@@ -246,7 +260,7 @@ class PostViewModel extends ChangeNotifier {
         }
         else {
 
-          return await navigatePush(context, const DashBoardScreen());
+          return await navigatePush(context,  QuillEditorWidget());
         }
 
     // _currentListIndex++;
@@ -340,7 +354,7 @@ class PostViewModel extends ChangeNotifier {
 
             categoryResponse = CategoryResponse.fromJson(decodedResponse);
 
-            isGettingPosts = false;
+            // isGettingPosts = false;
             notifyListeners();
           }
 
@@ -354,7 +368,7 @@ class PostViewModel extends ChangeNotifier {
           }
         }
       }).whenComplete(() {
-        isGettingPosts = false;
+        // isGettingPosts = false;
         notifyListeners();
       });
     } catch (e, s) {

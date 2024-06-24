@@ -22,14 +22,14 @@ class _PostInfoScreenState extends ConsumerState<PostInfoScreen> {
     var theme = Theme.of(context);
     var postProvider = ref.watch(postViewModel);
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextView(
-                text: 'Choose Recyclable Item',
+                text: 'Create New Post',
                 fontSize: 22.sp,
                 fontWeight: FontWeight.w600,
               ),
@@ -42,14 +42,27 @@ class _PostInfoScreenState extends ConsumerState<PostInfoScreen> {
                     SizedBox(
                       height: 15.h,
                     ),
+                    CustomTextField(
+                      fieldLabel: title,
+                      hint: enterTitle,
+                      controller: postProvider.titleController,
 
-                    selectItemWidget(),
-                    SizedBox(
-                      height: 40.h,
                     ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    CustomTextField(
+                      fieldLabel: author,
+                      hint: authorsName,
+                      controller: postProvider.authorController,
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    selectItemWidget(),
 
                     SizedBox(
-                      height: 40.h,
+                      height: 10.h,
                     ),
                     postProvider.selectedItem !=null ?recycleImage():Container()
                     // CustomTextField(
@@ -80,56 +93,63 @@ class _PostInfoScreenState extends ConsumerState<PostInfoScreen> {
   selectItemWidget() {
     var provider = ref.watch(postViewModel);
 
-    return Container(
-      height: 70.h,
-      decoration: BoxDecoration(
-        color: AppColors.kWhite,
-        borderRadius: BorderRadius.circular(
-          6.r,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextView(
+          text: category,
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w500,
+          color: AppColors.kTextGray,
         ),
-        border: Border.all(
-          width: 1.2.w,
-          color: AppColors.kDisabledButton,
-        ),
-      ),
-      padding: EdgeInsets.symmetric(
-        horizontal: 12.w,
-        vertical: 10.h,
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          isExpanded: true,
-          hint:  Text(
-            'Select Item',
-            style: TextStyle(color: AppColors.kTextBlack, fontFamily: 'Outfit', fontSize: 16.sp),
+        SizedBox(height: 5.h,),
+        Container(
+          height: 55.h,
+          decoration: BoxDecoration(
+            color: AppColors.kWhite,
+            borderRadius: BorderRadius.circular(
+              8.r,
+            ),
+            border: Border.all(
+              width: 1.2.w,
+              color: AppColors.kDisabledButton,
+            ),
           ),
-          value: provider.selectedItem,
-          icon: Image.asset(
-            AppImages.moreIcon,
-            // AppImages.dropDown,
-            width: 24.w,
-          ),
-          iconSize: 24.h,
-          // elevation: 16,
-          style: const TextStyle(color: Colors.black),
-          onChanged: (newState) {
-            setState(() {
-              provider.selectedItem = newState!;
-              logger.f(provider.selectedItem);
-            });
-          },
-          items: provider.categoryResponse!.data!.categories!.map<DropdownMenuItem<String>>((CategoryData value) {
-            return DropdownMenuItem<String>(
-              value: value.categories.toString(),
-              child: TextView(
-                text: value.categories.toString(),
-                color: AppColors.kTextBlack,
-                fontSize: 16.sp,
+          padding:  EdgeInsets.symmetric(horizontal: 12.w, vertical: 13.h),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              isExpanded: true,
+              hint: Text(
+                'Select Category',
+                style: TextStyle(color: const Color(0xFFB0B0B0), fontFamily: monaSansFont, fontSize: 12.sp),
               ),
-            );
-          } as DropdownMenuItem<String> Function(String e)).toList(),
+              value: provider.selectedItem,
+              icon: Image.asset(
+                AppImages.logo,
+                width: 24.w,
+              ),
+              iconSize: 24.h,
+              style: const TextStyle(color: Colors.black),
+              onChanged: (newState) {
+                setState(() {
+                  provider.selectedItem = newState!;
+                  logger.f(provider.selectedItem);
+                });
+              },
+              items: provider.categoryResponse?.data?.categories?.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: TextView(
+                    text: value,
+                    color: AppColors.kTextBlack,
+                    fontSize: 16.sp,
+                  ),
+                );
+              }).toList() ?? [], // Ensure items is not null
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 
@@ -141,7 +161,6 @@ class _PostInfoScreenState extends ConsumerState<PostInfoScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
 
-
         SizedBox(
           // height: 88.h,
           width: double.infinity,
@@ -150,24 +169,23 @@ class _PostInfoScreenState extends ConsumerState<PostInfoScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TextView(
-                text: 'Attach ${postProvider.selectedItem} Image',
+                text: 'Attach ${postProvider.selectedItem} Post Image',
                 fontSize: 22.sp,
                 textAlign: TextAlign.start,
                 fontWeight: FontWeight.w600,
 
               ),
               TextView(
-                text: 'Pick ${postProvider.selectedItem} recycle image from your device',
+                text: 'Pick ${postProvider.selectedItem} post image from your device',
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w400,
-
                 color: theme.colorScheme.secondary,
               ),
             ],
           ),
         ),
         SizedBox(
-          height: 30.h,
+          height: 10.h,
         ),
         SizedBox(
           height: 200.h,
