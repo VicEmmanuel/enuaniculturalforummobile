@@ -10,6 +10,8 @@ class AppColors {
   static const kTextSuccessfulPayment = Color(0xff2B3990);
   static const kAccountDetailsBackground= Color(0xffF1F5FD);
   static const kGuestDashboard = Color(0xff1a51b3);
+  static const kAsh300 = Color(0xffD9D9D9);
+  static const kGrey = Color(0xffD0D2D1);
   static const kGreen = Color(0xff0ACB4C);
   static const kGreenCredit = Color(0xff519E82);
   static const kGreenGlo = Color(0xff50B651);

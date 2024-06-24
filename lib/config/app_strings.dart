@@ -49,6 +49,9 @@ const totalAmountText = 'Total Amount';
 const merchantNameText = 'Merchant Name';
 const selectFormatText = 'Select format';
 const imageText = 'Image';
+const next = 'Next';
+const addPostImage = 'Add Post Image';
+
 const pdfText = 'PDF';
 
 const payNowText = 'Pay Now';

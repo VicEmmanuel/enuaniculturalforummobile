@@ -6,9 +6,12 @@ import 'dart:math';
 // ignore: depend_on_referenced_packages
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:enuaniculturalforummobile/config/app_strings.dart';
+import 'package:enuaniculturalforummobile/model/response/local_response/category_response.dart';
 import 'package:enuaniculturalforummobile/model/response/post_response_model.dart';
 import 'package:enuaniculturalforummobile/repository/backend/post_backend.dart';
 import 'package:enuaniculturalforummobile/src/utils.dart';
+import 'package:enuaniculturalforummobile/view/screens/dashboard/dashboard_screen.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,13 +34,19 @@ class PostViewModel extends ChangeNotifier {
         symbol: '${UtilFunctions.currency(context)} ',
       );
   PostResponseModel? postResponseModel;
+  CategoryResponse? categoryResponse;
 
   bool _validatePassword = true;
 
   final TextEditingController _aNewAmenityController = TextEditingController();
   TextEditingController get aNewAmenityController => _aNewAmenityController;
 
-  bool isGettingPersonalListings = true;
+
+  final QuillController _quillController = QuillController.basic();
+  QuillController get quillController => _quillController;
+
+
+  bool isGettingPosts = true;
   bool isGettingTenants = true;
   bool isFetchingRentingRequest = true;
   bool isFetchingListingAccessRequest = true;
@@ -184,6 +193,82 @@ class PostViewModel extends ChangeNotifier {
   bool get canLoadMoreListings => _canLoadMoreListings;
   int _listingPage = 2;
   int get listingPage => _listingPage;
+  String? selectedItem;
+
+  void backBtnControl(
+      BuildContext context,
+      ) {
+    if (_currentListIndex > 0) {
+      _currentListIndex--;
+    } else {
+      navigateBack(context);
+    }
+    notifyListeners();
+  }
+
+
+
+  ///Method to change page for guest
+  void pageChange(index) {
+    _currentListIndex = index;
+    notifyListeners();
+  }
+
+
+  ///Method to control next button f
+  nextBtnControl(
+      BuildContext context,
+      ) async {
+    switch (_currentListIndex) {
+
+      case 0:
+        if (selectedItem == null) {
+          showToast(msg: 'Select Recycle Item', isError: true);
+        }  else if (propertyImageList.isEmpty){
+          showToast(msg: 'Add Recycle Image', isError: true);
+        }
+        else {
+          _currentListIndex++;
+        }
+    // case 2:
+    //   if (pickUpDate != null
+    //       && pickUpTime != null
+    //   ) {
+    //     _currentListIndex++;
+    //   } else {
+    //     showToast(msg: 'Select date and time', isError: true);
+    //   }
+      default:
+        if (_quillController.toString().isEmpty
+        ) {
+          showToast(msg: 'Invalid bank account number', isError: true);
+
+        }
+        else {
+
+          return await navigatePush(context, const DashBoardScreen());
+        }
+
+    // _currentListIndex++;
+    // _currentListIndex++;
+    //   case 5:
+    //     if (propertyImageList.isNotEmpty) {
+    //       _currentListIndex++;
+    //     } else {
+    //       showToast(msg: addImage, isError: true);
+    //     }
+    // default:
+    //   if (propertyImageList.isNotEmpty) {
+    //     return await navigatePush(context, const PublishRecycleScreen());
+    //     // break;
+    //   } else {
+    //     showToast(msg: 'Add Image', isError: true);
+    //   }
+    // return navigatePush(context, const PublishScreen());
+    }
+
+    notifyListeners();
+  }
 
   //A Method that copies a string, value to clipboard.
   void copyToClipBoard(context, {required String value}) {
@@ -215,7 +300,7 @@ class PostViewModel extends ChangeNotifier {
 
             postResponseModel = PostResponseModel.fromJson(decodedResponse);
 
-            isGettingPersonalListings = false;
+            isGettingPosts = false;
             notifyListeners();
           }
 
@@ -229,7 +314,47 @@ class PostViewModel extends ChangeNotifier {
           }
         }
       }).whenComplete(() {
-        isGettingPersonalListings = false;
+        isGettingPosts = false;
+        notifyListeners();
+      });
+    } catch (e, s) {
+      logger
+        ..i(checkErrorLogs)
+        ..e(s);
+    }
+  }
+
+  Future<void> getAllCategories(
+      BuildContext context,
+      ) async {
+    try {
+      await postService.fetchAllCategories().then((value) async {
+        if (value != null) {
+          final decodedResponse = jsonDecode(value.toString());
+
+          if (decodedResponse['status'].toString() == 'true') {
+            // showToast(
+            //   msg: decodedResponse['message'].toString(),
+            //   isError: false,
+            // );
+
+            categoryResponse = CategoryResponse.fromJson(decodedResponse);
+
+            isGettingPosts = false;
+            notifyListeners();
+          }
+
+          if (decodedResponse['status'].toString() == 'true') {
+            categoryResponse = CategoryResponse.fromJson(decodedResponse);
+            // personalListings = postResponseModel!.data!.listings!.toList();
+            notifyListeners();
+            // check page count if its more than one, on every successful data fetch
+            //   _setCanLoadMoreListings(
+            //       status: int.parse(postResponseModel!.data!.lastPage.toString()) > 1);
+          }
+        }
+      }).whenComplete(() {
+        isGettingPosts = false;
         notifyListeners();
       });
     } catch (e, s) {
@@ -383,4 +508,25 @@ class PostViewModel extends ChangeNotifier {
   //       ..e(s);
   //   }
   // }
+
+  ///Method for  Picking Multiple Image
+  pickMultipleImage() async {
+    final picker = ImagePicker();
+    final pickedFile =
+    await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+    notifyListeners();
+    if (pickedFile != null) {
+      // _image = File(pickedFile.path);
+      propertyImageList.add(File(pickedFile.path));
+      notifyListeners();
+      logger.f('Image Path $propertyImageList');
+    } else {}
+  }
+
+  void removeImage(int index) {
+    if (index >= 0 && index < propertyImageList.length) {
+      propertyImageList.removeAt(index);
+      notifyListeners();
+    }
+  }
 }

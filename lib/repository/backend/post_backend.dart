@@ -252,4 +252,13 @@ class PostsBackend extends ApiService {
       headers: apiHeaderWithToken,
     );
   }
+
+  Future<dynamic> fetchAllCategories() async {
+    return getMth(
+      fetchAllCategoryUri,
+      headers: apiHeaderWithToken,
+    );
+  }
 }
+
+

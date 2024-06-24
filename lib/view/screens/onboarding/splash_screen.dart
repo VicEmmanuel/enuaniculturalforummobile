@@ -5,6 +5,7 @@ import 'package:enuaniculturalforummobile/src/screens.dart';
 import 'package:enuaniculturalforummobile/src/utils.dart';
 import 'package:enuaniculturalforummobile/view/screens/dashboard/dashboard_screen.dart';
 import 'package:enuaniculturalforummobile/view/screens/onboarding/onboarding_screen.dart';
+import 'package:enuaniculturalforummobile/view_model/posts/post_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,9 +22,9 @@ class SplashScreen extends ConsumerStatefulWidget {
 class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void didChangeDependencies() {
-    // ref.watch(onboardingViewModel).checkUser(context);
-    // ref.watch(dashboardViewModel).getDeviceLocation();
-    // ref.watch(themeViewModel).checkThemeMode();
+    var postProvider = ref.watch(postViewModel);
+    postProvider.getAllPosts(context);
+    postProvider.getAllCategories(context);
     super.didChangeDependencies();
   }
 

@@ -4,6 +4,7 @@ import 'package:enuaniculturalforummobile/utils/enums.dart';
 import 'package:enuaniculturalforummobile/view/components/custom_text.dart';
 import 'package:enuaniculturalforummobile/view/components/image_view.dart';
 import 'package:enuaniculturalforummobile/view/screens/auth_screens/login_screen.dart';
+import 'package:enuaniculturalforummobile/view_model/posts/post_view_model.dart';
 import 'package:enuaniculturalforummobile/view_model/theme_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,6 +19,7 @@ class ProfileScreen extends ConsumerStatefulWidget {
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    var postProvider = ref.watch(postViewModel);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -27,11 +29,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 15.h,),
-                const UserAccountDetails(
-                  name: 'Omoniyi Awosode',
-                  profilePicture: null,
-                  emailAddress: 'emailaddress@gmail.com',
-                  phoneNumber: '070 1234 5678',
+                GestureDetector(
+                  onTap: (){
+
+                    // postProvider.getAllPosts(context);
+                    postProvider.getAllCategories(context);
+                  },
+                  child: const UserAccountDetails(
+                    name: 'Omoniyi Awosode',
+                    profilePicture: null,
+                    emailAddress: 'emailaddress@gmail.com',
+                    phoneNumber: '070 1234 5678',
+                  ),
                 ),
                 SizedBox(
                   height: 20.h,

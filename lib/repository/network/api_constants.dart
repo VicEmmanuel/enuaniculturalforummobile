@@ -162,6 +162,8 @@ class ApiConstants {
 
   Uri get fetchAllPostsUri => Uri(
       scheme: scheme, host: host, path: '/api/get-all-posts');
+  Uri get fetchAllCategoryUri => Uri(
+      scheme: scheme, host: host, path: '/api/get-categories');
   // Uri get sendFundToAnotherWalletUri => Uri(scheme: scheme, host: host, path: '$version/transaction/tenant/transfer');
 
   Uri get deleteBankAccountNumberUri => Uri(

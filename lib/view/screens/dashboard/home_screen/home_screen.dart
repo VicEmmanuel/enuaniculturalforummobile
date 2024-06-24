@@ -1,4 +1,5 @@
 import 'package:enuaniculturalforummobile/config/app_strings.dart';
+import 'package:enuaniculturalforummobile/src/components.dart';
 import 'package:enuaniculturalforummobile/src/config.dart';
 import 'package:enuaniculturalforummobile/src/screens.dart';
 import 'package:enuaniculturalforummobile/utils/carousel_slider.dart';
@@ -17,6 +18,8 @@ import 'package:enuaniculturalforummobile/view_model/posts/post_view_model.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'create_post_screen.dart';
+
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -29,6 +32,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void didChangeDependencies() {
     var postProvider = ref.watch(postViewModel);
     postProvider.getAllPosts(context);
+    postProvider.getAllCategories(context);
     super.didChangeDependencies();
   }
 
@@ -42,6 +46,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var postProvider = ref.watch(postViewModel);
     return WillPopScope(
         onWillPop: () async {
           bool exit = await CustomAlerts().displayExitDialog(
@@ -68,7 +73,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             width: 100.w,
                           ),
                         ),
-                        CarouselWithIndicators(items: [''],),
+                        postProvider.isGettingPosts?ShimmerCarousel():CarouselWithIndicators(items: [''],),
                         SizedBox(
                           height: 10.h,
                         ),
@@ -97,7 +102,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(5))),
               onPressed: () async {
-                // navigatePush(context, RichEditorScreen());
+
+                navigatePush(context, PostCreateScreen());
               },
               child: const Icon(
                 Icons.add,
@@ -213,7 +219,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   posts() {
     var postProvider = ref.watch(postViewModel);
-    return ListView.builder(
+    return postProvider.isGettingPosts?ShimmerLoader():
+      ListView.builder(
       // physics: const NeverScrollableScrollPhysics(),
       itemCount: postProvider.postResponseModel!.data!.posts!.length,
       shrinkWrap: true,

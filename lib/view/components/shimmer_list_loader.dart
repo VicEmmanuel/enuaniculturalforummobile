@@ -15,37 +15,52 @@ class ShimmerLoader extends StatelessWidget {
         return Shimmer.fromColors(
           baseColor: Colors.grey[300]!,
           highlightColor: Colors.grey[100]!,
-          child: Padding(
-            padding: EdgeInsets.symmetric( vertical: 15.h),
-            child: Column(
-              children: [
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: Container(
-                    height: 40.h,
-                    width: 40.w,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8.r)),
-                  ),
-                  title: Container(
-                    height: 12.h,
-                    color: Colors.white,
-                  ),
-                  subtitle: Container(
-                    height: 16.h,
-                    color: Colors.white,
-                  ),
+          child: Column(
+            children: [
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: Container(
+                  height: 40.h,
+                  width: 40.w,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8.r)),
                 ),
-                Container(
+                title: Container(
+                  height: 12.h,
+                  color: Colors.white,
+                ),
+                subtitle: Container(
                   height: 16.h,
                   color: Colors.white,
                 ),
-              ],
-            ),
+              ),
+              Container(
+                height: 16.h,
+                color: Colors.white,
+              ),
+            ],
           ),
         );
       },
     );
   }
 }
+
+class ShimmerCarousel extends StatelessWidget {
+  const ShimmerCarousel({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return   Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        height: 200.h,
+        width: double.infinity,
+        color: Colors.white,
+      ),
+    );
+  }
+}
+
