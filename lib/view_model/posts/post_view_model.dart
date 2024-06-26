@@ -61,6 +61,7 @@ class PostViewModel extends ChangeNotifier {
   bool isDeletingListing = false;
   bool isFreezingOrUnfreezingListing = false;
   bool isCreatingPropertiesListings = false;
+  bool isCreatingPost = false;
   bool isUpdatingPropertiesListings = false;
 
   bool isProcessingTenant = false;
@@ -376,7 +377,7 @@ class PostViewModel extends ChangeNotifier {
     );
     final html = converter.convert();
     // List<String> trimmedAmenityValues = trimList(amenityValues);
-    isCreatingPropertiesListings = true;
+    isCreatingPost = true;
     logger.f(feesValues);
     notifyListeners();
     try {
@@ -398,7 +399,7 @@ class PostViewModel extends ChangeNotifier {
               msg: value['message'].toString(),
               isError: false,
             );
-            isCreatingPropertiesListings = false;
+            isCreatingPost = false;
             getAllPosts(context);
             await navigateReplace(
                 context,
@@ -415,12 +416,12 @@ class PostViewModel extends ChangeNotifier {
               isError: true,
             );
             // navigateBack(context);
-            isCreatingPropertiesListings = false;
+            isCreatingPost = false;
             notifyListeners();
           }
         }
       }).whenComplete(() {
-        isCreatingPropertiesListings = false;
+        isCreatingPost = false;
         notifyListeners();
       });
     } catch (e, s) {

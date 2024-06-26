@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:enuaniculturalforummobile/view/screens/auth_screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:enuaniculturalforummobile/model/local/dummy_data.dart';
 import 'package:enuaniculturalforummobile/src/components.dart';
@@ -538,8 +541,8 @@ Future<dynamic> displayLogoutDialog(BuildContext context,{
         title: Center(
           child: Column(
             children: [
-              ImageView.asset(AppImages.logOutSetting,width: 35.w,
-                height: 35.h,),
+              // ImageView.asset(AppImages.logOutSetting,width: 35.w,
+              //   height: 35.h,),
               SizedBox(height: 15.h,),
               TextView(
                 text: logOut,
@@ -778,6 +781,129 @@ Future<void> displaySwitchConfirmationMessageAlert(
           ),
         );
       });
+}
+Future<dynamic> displayLoginPermissionDialog(
+    BuildContext context, {
+      required ThemeMode themeMode,
+      required ThemeData theme,
+    }) async {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape:
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+        backgroundColor: themeMode == ThemeMode.light ? Colors.white : theme.cardColor,
+        title: Center(
+          child: TextView(
+            text: 'Create Post',
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        content: TextView(
+          text: 'You must be authenticated to make a post!',
+          fontSize: 14.sp,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          fontWeight: FontWeight.w500,
+        ),
+        actions: <Widget>[
+          Column(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              DefaultButtonMain(
+                color: AppColors.kPrimary1,
+                text: login,
+                borderColor: AppColors.kPrimary1,
+                // borderRadius: 38.r,
+                height: 48.h,
+                onPressed: () {
+                  navigateBack(context);
+                  navigatePush(context, LoginScreen());
+
+              },
+              ),
+              SizedBox(height: 5.h,),
+              DefaultButtonMain(
+                color: Colors.white,
+                textColor: AppColors.kPrimary1,
+                text: 'Back',
+                borderColor: AppColors.kPrimary1,
+                // borderRadius: 38.r,
+                height: 48.h,
+                onPressed: () {
+                 navigateBack(context);
+                },
+              ),
+            ],
+          )
+        ],
+      );
+    },
+  );
+}
+
+Future<dynamic> displayPostConfirmationDialog(
+    BuildContext context, {
+      required ThemeMode themeMode,
+      required ThemeData theme,
+      required VoidCallback onPressed
+    }) async {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape:
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+        backgroundColor: themeMode == ThemeMode.light ? Colors.white : theme.cardColor,
+        title: Center(
+          child: TextView(
+            text: 'Publish post',
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        content: TextView(
+          text: 'Are you sure you want to publish this post?',
+          fontSize: 14.sp,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          fontWeight: FontWeight.w500,
+        ),
+        actions: <Widget>[
+          Column(
+            children: [
+              DefaultButtonMain(
+                color: AppColors.kPrimary1,
+
+                text: 'Yes',
+                borderColor: AppColors.kPrimary1,
+                borderRadius: 38.r,
+                height: 48.h,
+                onPressed: onPressed,
+              ),
+              SizedBox(height: 5.h,),
+              DefaultButtonMain(
+                color: Colors.white,
+
+                textColor: AppColors.kPrimary1,
+                text: 'No',
+                borderColor: AppColors.kPrimary1,
+                borderRadius: 38.r,
+                height: 48.h,
+                onPressed: () {
+                  navigateBack(context);
+                },
+              ),
+
+
+            ],
+          )
+        ],
+      );
+    },
+  );
 }
 
 //

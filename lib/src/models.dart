@@ -9,7 +9,6 @@ export 'package:enuaniculturalforummobile/model/local/button_state.dart';
 export 'package:enuaniculturalforummobile/model/response/user_response_model.dart';
 export 'package:enuaniculturalforummobile/model/response/login_successful_response_model.dart';
 export 'package:enuaniculturalforummobile/model/response/bank_account_validated_response.dart';
-export 'package:enuaniculturalforummobile/model/response/listings_response_model.dart';
 export 'package:enuaniculturalforummobile/model/response/kyc_response_status.dart';
 export 'package:enuaniculturalforummobile/model/response/user_banks_response.dart';
 export 'package:enuaniculturalforummobile/model/response/local_response/state_response_model.dart';

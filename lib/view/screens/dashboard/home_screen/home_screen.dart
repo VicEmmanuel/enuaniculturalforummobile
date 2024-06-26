@@ -1,7 +1,9 @@
 import 'package:enuaniculturalforummobile/config/app_strings.dart';
+import 'package:enuaniculturalforummobile/model/local/dummy_data.dart';
 import 'package:enuaniculturalforummobile/src/components.dart';
 import 'package:enuaniculturalforummobile/src/config.dart';
 import 'package:enuaniculturalforummobile/src/screens.dart';
+import 'package:enuaniculturalforummobile/utils/alerts.dart';
 import 'package:enuaniculturalforummobile/utils/carousel_slider.dart';
 import 'package:enuaniculturalforummobile/utils/navigators.dart';
 import 'package:enuaniculturalforummobile/view/components/blog_card.dart';
@@ -15,6 +17,7 @@ import 'package:enuaniculturalforummobile/view/components/rich_editor_screen.dar
 import 'package:enuaniculturalforummobile/view/screens/dashboard/home_screen/blog_details_screen.dart';
 import 'package:enuaniculturalforummobile/view_model/payment_veiw_model/payment_view_model.dart';
 import 'package:enuaniculturalforummobile/view_model/posts/post_view_model.dart';
+import 'package:enuaniculturalforummobile/view_model/theme_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -47,6 +50,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     var postProvider = ref.watch(postViewModel);
+    var themeProvider = ref.watch(themeViewModel).themeMode;
+    var theme = Theme.of(context);
     return WillPopScope(
         onWillPop: () async {
           bool exit = await CustomAlerts().displayExitDialog(
@@ -57,40 +62,52 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Scaffold(
           backgroundColor: Colors.white,
           body: SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: ImageView.asset(
-                            AppImages.logo,
-                            width: 100.w,
-                          ),
+            child: XResponsiveWrap.mobile(
+              onRefresh: () => postProvider
+                  .getAllPosts(context)
+                  .then((value) => postProvider.getAllCategories(context)),
+              // loading: provider.isGettingPersonalListings,
+              // loadFailed:  recycleProvider.recycleHistoryResponse!.data == [],
+              children: [
+                SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Center(
+                              child: ImageView.asset(
+                                AppImages.logo,
+                                width: 100.w,
+                              ),
+                            ),
+                            postProvider.isGettingPosts
+                                ? ShimmerCarousel()
+                                : CarouselWithIndicators(
+                                    items: [''],
+                                  ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            TextView(
+                              text: 'LATEST POSTS',
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16.spMin,
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            posts(),
+                          ],
                         ),
-                        postProvider.isGettingPosts?ShimmerCarousel():CarouselWithIndicators(items: [''],),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        TextView(
-                          text: 'LATEST POSTS',
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16.spMin,
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        posts(),
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
           floatingActionButton: SizedBox(
@@ -102,8 +119,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(5))),
               onPressed: () async {
-
-                navigatePush(context, PostCreateScreen());
+                DummyData.accessToken != null
+                    ? navigatePush(context, PostCreateScreen())
+                    : displayLoginPermissionDialog(context,
+                        themeMode: themeProvider, theme: theme);
               },
               child: const Icon(
                 Icons.add,
@@ -219,37 +238,38 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   posts() {
     var postProvider = ref.watch(postViewModel);
-    return postProvider.isGettingPosts?ShimmerLoader():
-      ListView.builder(
-      // physics: const NeverScrollableScrollPhysics(),
-      itemCount: postProvider.postResponseModel!.data!.posts!.length,
-      shrinkWrap: true,
-      itemBuilder: (context, index) {
-        var item = postProvider.postResponseModel!.data!.posts![index];
-        // DateTime renewalDate = DateTime.parse(item.renewalDate.toString());
-        // int formattedRenewalDate = postProvider.daysBetween(renewalDate);
-        return InkWell(
-            onTap: () {
-              navigatePush(
-                  context,
-                  BlogDetailsScreen(
+    return postProvider.isGettingPosts
+        ? ShimmerLoader()
+        : ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: postProvider.postResponseModel!.data!.posts!.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              var item = postProvider.postResponseModel!.data!.posts![index];
+              // DateTime renewalDate = DateTime.parse(item.renewalDate.toString());
+              // int formattedRenewalDate = postProvider.daysBetween(renewalDate);
+              return InkWell(
+                  onTap: () {
+                    navigatePush(
+                        context,
+                        BlogDetailsScreen(
+                          title: item.title.toString(),
+                          blogDetails: item.description.toString(),
+                          createdAt: item.createdAt.toString(),
+                          author: item.author.toString(),
+                          category: item.categoryType.toString(),
+                          imagePath: item.filePath.toString(),
+                        ));
+                  },
+                  child: BlogCard(
+                    imageText: item.filePath.toString(),
                     title: item.title.toString(),
-                    blogDetails: item.description.toString(),
-                    createdAt: item.createdAt.toString(),
+                    categoryType: item.categoryType.toString(),
                     author: item.author.toString(),
-                    category: item.categoryType.toString(),
-                    imagePath: item.filePath.toString(),
+                    timeStamp: item.createdAt.toString(),
+                    canTap: true,
                   ));
             },
-            child: BlogCard(
-              imageText: item.filePath.toString(),
-              title: item.title.toString(),
-              categoryType: item.categoryType.toString(),
-              author: item.author.toString(),
-              timeStamp: item.createdAt.toString(),
-              canTap: true,
-            ));
-      },
-    );
+          );
   }
 }

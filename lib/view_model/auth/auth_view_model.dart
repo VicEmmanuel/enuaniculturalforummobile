@@ -252,7 +252,9 @@ class AuthViewModel extends ChangeNotifier {
               await saveAppTme();
               await saveUserPassword(_loginPwdController.text);
               await getUserPassword();
-              await navigateReplace(context, const DashBoardScreen());
+              WidgetRebirth.createRebirth(context: context);
+
+              // await navigateReplace(context, const DashBoardScreen());
 
               // await ProfileViewModel().loadData(context).then((value) async {
               //   if (value != null) {
@@ -386,73 +388,73 @@ class AuthViewModel extends ChangeNotifier {
   //   return resentOTP;
   // }
   //
-  // Future<void> userAutoLogin(BuildContext context,
-  //     {required String email, required String password}) async {
-  //
-  //   logger.f(email);
-  //   logger.f(password);
-  //   try {
-  //     _buttonLoginState = CustomButtonState(
-  //       buttonState: ButtonState.loading,
-  //       text: login,
-  //     );
-  //     notifyListeners();
-  //     await authService
-  //         .signInAdmin(
-  //       email: email.toLowerCase(),
-  //       password: password,
-  //     )
-  //         .then((value) async {
-  //       if (value != null) {
-  //         if (value['status'].toString() == 'true') {
-  //           _buttonLoginState = CustomButtonState(
-  //             buttonState: ButtonState.idle,
-  //             text: login,
-  //           );
-  //
-  //           if (value['data']['verifyOtp'].toString() == '1') {
-  //             DummyData.emailAddress = email.toLowerCase();
-  //             notifyListeners();
-  //             navigatePush(
-  //                 context,
-  //                 EmailVerificationScreen(
-  //                   title: verifyEmail,
-  //                   subTitle: enterEmailCode,
-  //                   email: email.toLowerCase(),
-  //                 ));
-  //           } else {
-  //             DummyData.emailAddress = email.toLowerCase();
-  //             DummyData.password = password;
-  //             await saveUserEmail(email.toLowerCase());
-  //             await getUserEmail();
-  //             await saveAccessToken(value['data']['token'].toString());
-  //             await getAccessToken();
-  //             await saveAppTme();
-  //             await saveUserPassword(password);
-  //             await getUserPassword();
-  //             await ProfileViewModel().loadData(context).then((value) async {
-  //               if (value != null) {
-  //                 DummyData.username = value.firstName.toString();
-  //                 DummyData.lastname = value.lastName.toString();
-  //                 await navigateReplace(context, const DashBoardScreen());
-  //               }
-  //             });
-  //             notifyListeners();
-  //           }
-  //         } else {
-  //           navigatePush(context, const OnboardingScreen());
-  //         }
-  //       } else {
-  //         navigatePush(context, const OnboardingScreen());
-  //       }
-  //     });
-  //   } catch (e, s) {
-  //     navigatePush(context, const OnboardingScreen());
-  //     logger
-  //       ..i(checkErrorLogs)
-  //       ..e(s);
-  //   }
-  // }
+  Future<void> userAutoLogin(BuildContext context,
+      {required String email, required String password}) async {
+
+    logger.f(email);
+    logger.f(password);
+    try {
+      _buttonLoginState = CustomButtonState(
+        buttonState: ButtonState.loading,
+        text: login,
+      );
+      notifyListeners();
+      await authService
+          .signInAdmin(
+        email: email.toLowerCase(),
+        password: password,
+      )
+          .then((value) async {
+        if (value != null) {
+          if (value['status'].toString() == 'true') {
+            _buttonLoginState = CustomButtonState(
+              buttonState: ButtonState.idle,
+              text: login,
+            );
+
+            if (value['data']['verifyOtp'].toString() == '1') {
+              DummyData.emailAddress = email.toLowerCase();
+              notifyListeners();
+              // navigatePush(
+              //     context,
+              //     EmailVerificationScreen(
+              //       title: verifyEmail,
+              //       subTitle: enterEmailCode,
+              //       email: email.toLowerCase(),
+              //     ));
+            } else {
+              DummyData.emailAddress = email.toLowerCase();
+              DummyData.password = password;
+              await saveUserEmail(email.toLowerCase());
+              await getUserEmail();
+              await saveAccessToken(value['data']['token'].toString());
+              await getAccessToken();
+              await saveAppTme();
+              await saveUserPassword(password);
+              await getUserPassword();
+              await ProfileViewModel().loadData(context).then((value) async {
+                if (value != null) {
+                  DummyData.username = value.data!.user!.name.toString();
+                  // DummyData.lastname = value.lastName.toString();
+                  await navigateReplace(context, const DashBoardScreen());
+                }
+              });
+              notifyListeners();
+            }
+          } else {
+            navigatePush(context, const OnboardingScreen());
+          }
+        } else {
+          navigatePush(context, const OnboardingScreen());
+        }
+      });
+    } catch (e, s) {
+      navigatePush(context, const OnboardingScreen());
+      logger
+        ..i(checkErrorLogs)
+        ..e(s);
+    }
+  }
   //
   // Future<void> verifyFPwdEmail(context,
   //     {required String email, bool isForgotPassword = false}) async {

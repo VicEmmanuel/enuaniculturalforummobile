@@ -5,6 +5,7 @@ import 'package:enuaniculturalforummobile/config/app_colors.dart';
 import 'package:enuaniculturalforummobile/config/app_images.dart';
 import 'package:enuaniculturalforummobile/src/components.dart';
 import 'package:enuaniculturalforummobile/src/providers.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 
 class SuccessLoadingScreen extends ConsumerStatefulWidget {
   final String informationText;
@@ -22,51 +23,41 @@ class _SuccessLoadingScreenState extends ConsumerState<SuccessLoadingScreen> {
     var theme = Theme.of(context);
     return Scaffold(
         backgroundColor: theme.scaffoldBackgroundColor,
-        body: Stack(
-          // mainAxisAlignment: MainAxisAlignment.center,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Center(
-                child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 70.w),
-              child: ImageView.asset(
-                AppImages.splashSuccess,
-                color: themeMode == ThemeMode.dark ? theme.scaffoldBackgroundColor : null,
-              ),
-            )),
-            Center(
+
+            Container(
+              // color: Colors.red,
+              // height: 800.h,
+              alignment: Alignment.center,
               child: SizedBox(
-                height: 45.h,
-                width: 45.w,
-                child: CircularProgressIndicator(
-                  color: AppColors.kGreenLoader,
-                  backgroundColor: AppColors.kGreenLoader.withOpacity(0.1),
-                  strokeWidth: 6,
+                height: 140.h,
+                width: 100.w,
+                child: LoadingIndicator(
+                  indicatorType: Indicator.ballGridBeat,
+                  colors: [
+                    theme.primaryColor,
+                  ],
+                  strokeWidth: 2,
+                  // backgroundColor: AppColors.kWhite,
+                  pathBackgroundColor: theme.colorScheme.primary,
                 ),
               ),
             ),
-            Positioned(
-              bottom: 230.h,
-              left: 20.w,
-              right: 20.w,
-              child: Center(
-                child: Column(
-                  children: [
-                    TextView(
-                      text: widget.informationText,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 22.sp,
-                    ),
-                    TextView(
-                      text: widget.detailText ?? '',
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14.sp,
-                      textAlign: TextAlign.center,
-                      maxLines: 3,
-                    ),
-                  ],
-                ),
-              ),
-            )
+            TextView(
+              text: widget.informationText,
+              fontWeight: FontWeight.w600,
+              fontSize: 22.sp,
+            ),
+            TextView(
+              text: widget.detailText ?? '',
+              fontWeight: FontWeight.w400,
+              fontSize: 14.sp,
+              textAlign: TextAlign.center,
+              maxLines: 3,
+            ),
+
           ],
         ));
   }

@@ -1,6 +1,10 @@
+import 'package:enuaniculturalforummobile/model/local/dummy_data.dart';
 import 'package:enuaniculturalforummobile/src/components.dart';
 import 'package:enuaniculturalforummobile/src/config.dart';
+import 'package:enuaniculturalforummobile/src/models.dart';
+import 'package:enuaniculturalforummobile/utils/alerts.dart';
 import 'package:enuaniculturalforummobile/utils/enums.dart';
+import 'package:enuaniculturalforummobile/utils/navigators.dart';
 import 'package:enuaniculturalforummobile/view/components/custom_text.dart';
 import 'package:enuaniculturalforummobile/view/components/image_view.dart';
 import 'package:enuaniculturalforummobile/view/screens/auth_screens/login_screen.dart';
@@ -8,6 +12,8 @@ import 'package:enuaniculturalforummobile/view_model/posts/post_view_model.dart'
 import 'package:enuaniculturalforummobile/view_model/theme_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rebirth/rebirth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -17,6 +23,8 @@ class ProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
+  bool isLogOutLoading = false;
+
   @override
   Widget build(BuildContext context) {
     var postProvider = ref.watch(postViewModel);
@@ -35,8 +43,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     // postProvider.getAllPosts(context);
                     postProvider.getAllCategories(context);
                   },
-                  child: const UserAccountDetails(
-                    name: 'Omoniyi Awosode',
+                  child:  UserAccountDetails(
+                    name: DummyData.username,
                     profilePicture: null,
                     emailAddress: 'emailaddress@gmail.com',
                     phoneNumber: '070 1234 5678',
@@ -49,7 +57,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 SizedBox(
                   height: 20.h,
                 ),
-                moreSection(),
+                DummyData.accessToken!=null? moreSection(): DefaultButtonMain(text: login, onPressed: (){
+                  navigatePush(context, LoginScreen());
+                },),
                 SizedBox(height: 16.h,),
               ],
             ),
@@ -104,16 +114,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Widget moreSection() {
+    var themeProvider = ref.watch(themeViewModel).themeMode;
+    var theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const TextView(
-          text: moreText,
-          fontWeight: FontWeight.w500,
-        ),
-        SizedBox(
-          height: 12.h,
-        ),
+
         Container(
           padding: EdgeInsets.symmetric(
             vertical: 8.h,
@@ -123,48 +129,86 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              singleProfileOptions(
-                title: referralsText,
-                iconPath: AppImages.referralsIcon,
-                onTap: () {},
-              ),
-              divider(),
-              singleProfileOptions(
-                title: inviteAFriendText,
-                iconPath: AppImages.personAddIcon,
-                onTap: () {},
-              ),
-              divider(),
-              singleProfileOptions(
-                title: customerSupportText,
-                iconPath: AppImages.phoneIcon,
-                onTap: () {},
-              ),
-              divider(),
-              singleProfileOptions(
-                title: appDetailsText,
-                iconPath: AppImages.appDetailsIcon,
-                onTap: () {},
-              ),
-              divider(),
-              singleProfileOptions(
-                title: visitOurWebsiteText,
-                iconPath: AppImages.globeIcon,
-                onTap: () {},
-              ),
-              divider(),
-              singleProfileOptions(
+              // singleProfileOptions(
+              //   title: referralsText,
+              //   iconPath: AppImages.referralsIcon,
+              //   onTap: () {},
+              // ),
+              // divider(),
+              // singleProfileOptions(
+              //   title: inviteAFriendText,
+              //   iconPath: AppImages.personAddIcon,
+              //   onTap: () {},
+              // ),
+              // divider(),
+              // singleProfileOptions(
+              //   title: customerSupportText,
+              //   iconPath: AppImages.phoneIcon,
+              //   onTap: () {},
+              // ),
+              // divider(),
+              // singleProfileOptions(
+              //   title: appDetailsText,
+              //   iconPath: AppImages.appDetailsIcon,
+              //   onTap: () {},
+              // ),
+              // divider(),
+              // singleProfileOptions(
+              //   title: visitOurWebsiteText,
+              //   iconPath: AppImages.globeIcon,
+              //   onTap: () {},
+              // ),
+              // divider(),
+               isLogOutLoading
+                  ? const Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: CircularProgressIndicator(
+                      color: AppColors.kPrimary1,
+
+                    ),
+                  ))
+                  : singleProfileOptions(
                 title: logoutText,
                 iconPath: AppImages.logoutIcon,
                 textColor: AppColors.kLogOutPrimary,
                 onTap: () async {
-                  await Navigator.of(context).pushAndRemoveUntil(
-                    // the new route
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => const  LoginScreen()
-                    ),
-                        (Route route) => false,
-                  );
+                  displayLogoutDialog(context,
+                      theme: theme,
+                      themeMode: themeProvider, onTap: () async {
+                        navigateBack(context);
+                        setState(() {
+                          isLogOutLoading = true;
+                        });
+                        try {
+                          SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                          await prefs.remove('Email');
+                          await prefs.remove('Password');
+                          await prefs.remove('accessToken');
+                          DummyData.firstName = '';
+                          DummyData.lastName = '';
+                          DummyData.username = '';
+                          await Future.delayed(const Duration(seconds: 2));
+                          WidgetRebirth.createRebirth(context: context);
+
+
+                        } catch (e) {
+                          setState(() {
+                            isLogOutLoading = false;
+                          });
+                        }
+                      });
+
+
+                  // await Navigator.of(context).pushAndRemoveUntil(
+                  //   // the new route
+                  //   MaterialPageRoute(
+                  //       builder: (BuildContext context) => const  LoginScreen()
+                  //   ),
+                  //       (Route route) => false,
+                  // );
                 },
               ),
             ],

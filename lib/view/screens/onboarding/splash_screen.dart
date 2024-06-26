@@ -23,15 +23,18 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void didChangeDependencies() {
     var postProvider = ref.watch(postViewModel);
-    postProvider.getAllPosts(context);
-    postProvider.getAllCategories(context);
+
+    // postProvider.getAllPosts(context);
+    ref.watch(onboardingViewModel).checkUser(context);
+    // postProvider.getAllCategories(context);
+
     super.didChangeDependencies();
   }
 
   @override
   void initState() {
-    Timer(const Duration(seconds: 3),
-        () => navigateReplace(context, const DashBoardScreen()));
+    // Timer(const Duration(seconds: 3),
+    //     () => navigateReplace(context, const DashBoardScreen()));
     super.initState();
   }
 

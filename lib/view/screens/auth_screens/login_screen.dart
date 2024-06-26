@@ -112,8 +112,28 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   },
                 ),
                 SizedBox(height: 62.h),
+
                 doNotHaveAccount(),
                 SizedBox(height: 30.h),
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pushAndRemoveUntil(
+                        // the new route
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                            const DashBoardScreen()),
+                            (Route route) => false,
+                      );
+                    },
+                    child: TextView(
+                      text: skipToAppText,
+                      color: AppColors.kPrimary1,
+                      decoration: TextDecoration.underline,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                )
 
               ],
             ),

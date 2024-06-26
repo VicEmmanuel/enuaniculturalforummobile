@@ -49,7 +49,7 @@ class ApiConstants {
       path: '$version/$authPath/$userPath/change-password');
 
   Uri get getProfileUri =>
-      Uri(scheme: scheme, host: host, path: '$version/profile/user');
+      Uri(scheme: scheme, host: host, path: '/api/user-profile');
 
   // Uri get fetchListingsUri => Uri(scheme: scheme, host: host, path: '$version/listing/user');
   //
@@ -291,7 +291,7 @@ class ApiConstants {
     // 'Content-Type': 'multipart/form-data'
   };
   Map<String, String> apiHeaderWithFormData = {
-    
+
     'Content-Type': 'multipart/form-data',
     'Authorization': 'Bearer 7|G0oRsDb8iXRRKgRb4V9OJhRPYTla6Ryk1LPRb4yWf1156a00',
     // 'Content-Type': 'multipart/form-data'
