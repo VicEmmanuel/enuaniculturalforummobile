@@ -125,7 +125,7 @@ class _PostInfoScreenState extends ConsumerState<PostInfoScreen> {
               ),
               value: provider.selectedItem,
               icon: Image.asset(
-                AppImages.logo,
+                AppImages.dropDown,
                 width: 24.w,
               ),
               iconSize: 24.h,

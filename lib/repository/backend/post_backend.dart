@@ -94,29 +94,29 @@ class PostsBackend extends ApiService {
 
   Future<dynamic> createNewListing(
       {
-        // required File image,
-        required List<File?>? images,
-        required String title,
-        required String address,
-        required String city,
-        required List<String> amenities,
-        List<Map<String, dynamic>>? fees,
-        // required String country,
-        String? tags,
-        required String listingType,
-        required String propertySize,
-        required String propertyType,
-        required String description,
-        required String? paymentPlan,
-        required String state,
-        required double price,
-        required int totalUnits,
-        required int availableUnits,
-        required int parkInDuration,
-        // required bool underXampContract,
-        // required String propertyContractType,
-        int? bedrooms,
-        int? bathrooms}) async {
+      // required File image,
+      required List<File?>? images,
+      required String title,
+      required String address,
+      required String city,
+      required List<String> amenities,
+      List<Map<String, dynamic>>? fees,
+      // required String country,
+      String? tags,
+      required String listingType,
+      required String propertySize,
+      required String propertyType,
+      required String description,
+      required String? paymentPlan,
+      required String state,
+      required double price,
+      required int totalUnits,
+      required int availableUnits,
+      required int parkInDuration,
+      // required bool underXampContract,
+      // required String propertyContractType,
+      int? bedrooms,
+      int? bathrooms}) async {
     List<MultipartFile>? fileItems = [];
 
     if (images != null) {
@@ -175,27 +175,27 @@ class PostsBackend extends ApiService {
 
   Future<dynamic> updateListing(
       {
-        // required List<File?>? images,
-        required String title,
-        required String address,
-        required String city,
-        required List<String> amenities,
-        // List<Map<String, dynamic>>? fees,
-        // required String country,
-        // String? tags,
-        // required String listingType,
-        // required String propertySize,
-        // required String propertyType,
-        required String description,
-        // required String? paymentPlan,
-        required String state,
-        required double price,
-        // required int totalUnits,
-        // required int availableUnits,
-        // required int parkInDuration,
-        // int? bedrooms,
-        // int? bathrooms,
-        required String id}) async {
+      // required List<File?>? images,
+      required String title,
+      required String address,
+      required String city,
+      required List<String> amenities,
+      // List<Map<String, dynamic>>? fees,
+      // required String country,
+      // String? tags,
+      // required String listingType,
+      // required String propertySize,
+      // required String propertyType,
+      required String description,
+      // required String? paymentPlan,
+      required String state,
+      required double price,
+      // required int totalUnits,
+      // required int availableUnits,
+      // required int parkInDuration,
+      // int? bedrooms,
+      // int? bathrooms,
+      required String id}) async {
     // List<MultipartFile>? fileItems = [];
 
     // if (images != null) {
@@ -236,15 +236,12 @@ class PostsBackend extends ApiService {
     });
   }
 
-  Future<dynamic> fetchListingImage({
-    required String uri
-  }) async {
+  Future<dynamic> fetchListingImage({required String uri}) async {
     return getMth(
       Uri.parse(uri),
       headers: apiHeaderWithToken,
     );
   }
-
 
   Future<dynamic> fetchAllPosts() async {
     return getMth(
@@ -260,19 +257,15 @@ class PostsBackend extends ApiService {
     );
   }
 
-
-  Future<dynamic> createNewPost(
-      {
-        // required File image,
-        required List<File?>? images,
-        required String title,
-        required String description,
-        // required String image,
-        required String category_type,
-        required String author,
-      }) async {
-    List<MultipartFile>? fileItems = [];
-
+  Future<dynamic> createNewPost({
+    required List<File?>? images,
+    required String title,
+    required String description,
+    required String category_type,
+    required String author,
+    required String authToken,  // Pass the auth token here
+  }) async {
+    List<MultipartFile> fileItems = [];
     if (images != null) {
       for (File? file in images) {
         if (file != null) {
@@ -285,23 +278,84 @@ class PostsBackend extends ApiService {
       }
     }
 
-    return uploadMth(
-      createNewPostUri,
-      data: FormData.fromMap({
-        'title': 'nh',
-        // 'title': title.trim(),
-        // "description": description,
-        "description": 'hjnkm',
-        'author': 'jpojo',
-        // 'author': author.trim(),
-        'category_type': 'iji',
-        'image': fileItems[0]
-        // 'category_type': category_type.trim(),
-        // 'image': fileItems[0]
-      }),
-      headers: apiHeaderWithToken,
-    );
+    try {
+      var formData = FormData.fromMap({
+        'title': title,
+        'description': description,
+        'author': author,
+        'category_type': category_type,
+        'image': fileItems.isNotEmpty ? fileItems[0] : null, // Include the first image
+      });
+
+      var response = await Dio().post(
+        'https://enuaniculturalforum.com/api/create-post',
+        data: formData,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $authToken',
+            'Content-Type': 'multipart/form-data',
+          },
+        ),
+      );
+
+      // Log the full response for debugging
+      print("Response status: ${response.statusCode}");
+      print("Response headers: ${response.headers}");
+      print("Response body: ${response.data}");
+
+      if (response.statusCode == 302) {
+        print("Redirection detected. Location: ${response.headers['location']}");
+      }
+
+      final decodedResponse = response.data;
+      return decodedResponse;
+    } catch (e) {
+      if (e is DioError) {
+        print("DioError: ${e.response}");
+        print("DioError Response data: ${e.response?.data}");
+      } else {
+        print("Error: $e");
+      }
+      rethrow;
+    }
   }
+
+  // Future<dynamic> createNewPost({
+  //   required List<File?>? images,
+  //   required String title,
+  //   required String description,
+  //   required String category_type,
+  //   required String author,
+  // }) async {
+  //   List<MultipartFile>? fileItems = [];
+  //   if (images != null) {
+  //     for (File? file in images) {
+  //       if (file != null) {
+  //         String fileName = file.path.split('/').last;
+  //         fileItems.add(await MultipartFile.fromFile(
+  //           file.path,
+  //           filename: fileName,
+  //         ));
+  //       }
+  //     }
+  //   }
+  //   return uploadMth(
+  //     createNewPostUri,
+  //     data: FormData.fromMap({
+  //       'title': 'nh',
+  //       "description": 'hjnkm',
+  //       'author': 'jpojo',
+  //       'category_type': 'iji',
+  //       // 'image': fileItems[0],
+  //       'image': 'ok'
+  //     }),
+  //     headers: apiHeaderWithFormData,
+  //   );
+  // }
+
+
+
+
+
+
 }
-
-

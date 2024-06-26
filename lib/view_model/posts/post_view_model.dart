@@ -21,6 +21,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:vsc_quill_delta_to_html/vsc_quill_delta_to_html.dart';
 
 import '../../model/response/rental_request_response.dart';
 
@@ -367,49 +368,42 @@ class PostViewModel extends ChangeNotifier {
   }
 
   Future<void> createNewPost(BuildContext context) async {
-    List<String> trimmedAmenityValues = trimList(amenityValues);
+    final json = _quillController.document.toDelta().toJson();
+    print(json);
+    final converter = QuillDeltaToHtmlConverter(
+      json,
+      ConverterOptions.forEmail(),
+    );
+    final html = converter.convert();
+    // List<String> trimmedAmenityValues = trimList(amenityValues);
     isCreatingPropertiesListings = true;
     logger.f(feesValues);
-    // navigatePush(context,
-    //     const SuccessLoadingScreen(informationText: verifyingProperty));
     notifyListeners();
     try {
       await postService
           .createNewPost(
         images: propertyImageList,
         title: _titleController.text,
-        description: 'jj',
-        // description: jsonEncode(quillController.document.toDelta().toJson()),
-        // images: propertyImageList.toString(),
+        description: html,
         category_type: selectedItem.toString(),
-        author: _authorController.text,
-      )
-          .then((value) async {
-        if (value != null) {
-          final decodedResponse = jsonDecode(value.toString());
+          author: _authorController.text,
+        authToken: '7|G0oRsDb8iXRRKgRb4V9OJhRPYTla6Ryk1LPRb4yWf1156a00',
 
-          if (decodedResponse['status'].toString() == 'success') {
+      ).then((value) async {
+        if (value != null) {
+          // final decodedResponse = jsonDecode(value.toString());
+
+          if (value['status'].toString() == 'true') {
             showToast(
-              msg: decodedResponse['message'].toString(),
+              msg: value['message'].toString(),
               isError: false,
             );
             isCreatingPropertiesListings = false;
             getAllPosts(context);
-            // AwesomeNotifications().createNotification(
-            //   content: NotificationContent(
-            //       id: Random().nextInt(200),
-            //       channelKey: "basic_channel",
-            //       title: "Recycle order!",
-            //       color: AppColors.kPrimary1,
-            //       notificationLayout: NotificationLayout.BigText,
-            //       body:
-            //           "Your recycle order has been placed and being processed.\nItem: $selectedItem"),
-            // );
-            // SubscriptionViewModel().getNotificationConfirmation(context);
             await navigateReplace(
                 context,
                 const SuccessScreen(
-                    infoText: 'Your Order has been Placed',
+                    infoText: 'New Post Created',
                     newPage: DashBoardScreen(),
                     navigateButtonText: continueText));
 
@@ -417,7 +411,7 @@ class PostViewModel extends ChangeNotifier {
             notifyListeners();
           } else {
             showToast(
-              msg: decodedResponse['message'].toString(),
+              msg: value['message'].toString(),
               isError: true,
             );
             // navigateBack(context);
@@ -580,6 +574,18 @@ class PostViewModel extends ChangeNotifier {
   //       ..e(s);
   //   }
   // }
+
+  void getQuillContent() {
+    final json = _quillController.document.toDelta().toJson();
+    print(json);
+    final converter = QuillDeltaToHtmlConverter(
+      json,
+      ConverterOptions.forEmail(),
+    );
+    final html = converter.convert();
+    logger.wtf(html);
+
+  }
 
   ///Method for  Picking Multiple Image
   pickMultipleImage() async {

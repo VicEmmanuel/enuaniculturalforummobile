@@ -165,7 +165,7 @@ class ApiConstants {
   Uri get fetchAllCategoryUri => Uri(
       scheme: scheme, host: host, path: '/api/get-categories');
   Uri get createNewPostUri =>
-      Uri(scheme: scheme, host: host, path: 'api/create-post');
+      Uri(scheme: scheme, host: host, path: '/api/create-post');
   // Uri get sendFundToAnotherWalletUri => Uri(scheme: scheme, host: host, path: '$version/transaction/tenant/transfer');
 
   Uri get deleteBankAccountNumberUri => Uri(
@@ -288,7 +288,15 @@ class ApiConstants {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.acceptHeader: '*/*',
     HttpHeaders.authorizationHeader: 'Bearer ${DummyData.accessToken}',
+    // 'Content-Type': 'multipart/form-data'
   };
+  Map<String, String> apiHeaderWithFormData = {
+    
+    'Content-Type': 'multipart/form-data',
+    'Authorization': 'Bearer 7|G0oRsDb8iXRRKgRb4V9OJhRPYTla6Ryk1LPRb4yWf1156a00',
+    // 'Content-Type': 'multipart/form-data'
+  };
+
 
   var termsOfSServicesUrl = 'https://getxamp.com/terms-of-service';
   var privacyPolicyUrl = 'https://getxamp.com/privacy-policy';

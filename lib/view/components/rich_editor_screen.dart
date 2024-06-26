@@ -103,7 +103,7 @@ class _QuillEditorWidgetState extends ConsumerState<QuillEditorWidget> {
           Expanded(
             child: QuillEditor.basic(
               configurations: QuillEditorConfigurations(
-                controller: _controller,
+                controller: postController.quillController,
                 padding: EdgeInsets.symmetric(horizontal: 10.w),
                 // readOnly: false,
                 sharedConfigurations: const QuillSharedConfigurations(
@@ -149,6 +149,7 @@ class _QuillEditorWidgetState extends ConsumerState<QuillEditorWidget> {
                     onPressed: () {
                       // ref.watch(listingViewModel).clearData();
                       ref.watch(postViewModel).createNewPost(context);
+                      // ref.watch(postViewModel).getQuillContent();
                       // setState(() {});
                     }),
               ],
@@ -159,3 +160,5 @@ class _QuillEditorWidgetState extends ConsumerState<QuillEditorWidget> {
     ));
   }
 }
+
+
