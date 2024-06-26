@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 
+import 'package:enuaniculturalforummobile/view/screens/auth_screens/login_screen.dart';
 import 'package:enuaniculturalforummobile/view/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -442,14 +443,14 @@ class AuthViewModel extends ChangeNotifier {
               notifyListeners();
             }
           } else {
-            navigatePush(context, const OnboardingScreen());
+            navigatePush(context, const LoginScreen());
           }
         } else {
-          navigatePush(context, const OnboardingScreen());
+          navigatePush(context, const LoginScreen());
         }
       });
     } catch (e, s) {
-      navigatePush(context, const OnboardingScreen());
+      navigatePush(context, const LoginScreen());
       logger
         ..i(checkErrorLogs)
         ..e(s);

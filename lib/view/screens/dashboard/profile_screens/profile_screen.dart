@@ -46,8 +46,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   child:  UserAccountDetails(
                     name: DummyData.username,
                     profilePicture: null,
-                    emailAddress: 'emailaddress@gmail.com',
-                    phoneNumber: '070 1234 5678',
+                    emailAddress: DummyData.emailAddress.toString(),
+                    // phoneNumber: '070 1234 5678',
                   ),
                 ),
                 SizedBox(
@@ -267,12 +267,12 @@ class UserAccountDetails extends ConsumerWidget {
       {super.key,
       required this.name,
       required this.emailAddress,
-      required this.phoneNumber,
+      // required this.phoneNumber,
       required this.profilePicture});
 
   final String name;
   final String emailAddress;
-  final String phoneNumber;
+  // final String phoneNumber;
   final String? profilePicture;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -297,10 +297,11 @@ class UserAccountDetails extends ConsumerWidget {
           //   radius: 24.r,
           //   backgroundImage: NetworkImage(profilePicture),
           // ),
-          ProfileImage(
-            imageType: ProfileImageType.user,
-            imageUrl: profilePicture,
-          ),
+          // ProfileImage(
+          //   imageType: ProfileImageType.user,
+          //   imageUrl: profilePicture,
+          // ),
+          ImageView.asset(AppImages.logo, width: 50.w,),
           SizedBox(
             width: 16.w,
           ),
@@ -324,16 +325,16 @@ class UserAccountDetails extends ConsumerWidget {
                 color: AppColors.kBlack4.withOpacity(0.4),
 
               ),
-              SizedBox(
-                height: 4.h,
-              ),
-              TextView(
-                text: phoneNumber,
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w400,
-                color: AppColors.kBlack4.withOpacity(0.4),
-
-              ),
+              // SizedBox(
+              //   height: 4.h,
+              // ),
+              // TextView(
+              //   text: phoneNumber,
+              //   fontSize: 12.sp,
+              //   fontWeight: FontWeight.w400,
+              //   color: AppColors.kBlack4.withOpacity(0.4),
+              //
+              // ),
             ],
           )
         ],

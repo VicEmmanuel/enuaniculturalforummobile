@@ -92,6 +92,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             SizedBox(
                               height: 10.h,
                             ),
+
                             TextView(
                               text: 'LATEST POSTS',
                               fontWeight: FontWeight.w700,
