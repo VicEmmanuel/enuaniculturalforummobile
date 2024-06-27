@@ -33,7 +33,7 @@ class OnboardingViewModel extends ChangeNotifier {
       logger.t("First time on App? : ${DummyData.firstTimeOnApp}");
 
       if (DummyData.firstTimeOnApp == true || DummyData.firstTimeOnApp == null) {
-        navigateReplace(context, const OnboardingScreen());
+        navigateReplace(context, const DashBoardScreen());
       } else {
         logger.i("Check User");
         //  DummyData.localUserID = sharedPreferences.getString("UserID");
@@ -79,7 +79,6 @@ class OnboardingViewModel extends ChangeNotifier {
 
         //navigateReplace(context, const OnboardingScreen());
       }
-
 
     });
   }

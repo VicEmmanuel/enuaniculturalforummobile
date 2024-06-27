@@ -33,30 +33,26 @@ class QuickMenuButton extends StatelessWidget {
             BorderRadius.circular(12.0.r), // Adjust the radius as needed
           ),
           // disabledColor:(buttonState == ButtonState.disabled)?Colors.grey:null,
-          child: Row(
-            // mainAxisAlignment: MainAxisAlignment.start, // Align content to start
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.w),
+            child:
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                  child: Container(height: 45.h, width: double.infinity,
+                  decoration: BoxDecoration(
+                    // color: Color(0xFFDFE8FA),
+                    borderRadius: BorderRadius.circular(8.r)
 
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.w),
-                child:
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(height: 28.h, width: 28.w,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFDFE8FA),
-                      borderRadius: BorderRadius.circular(8.r)
-                        
-                    ),
-                      child: Center(child: ImageView.svg(iconPath, width: 13.33.w,  height: 13.33.h,),),
-                    ),
-                    SizedBox(height: 15.h,),
-                    TextView(text: title, fontSize: 12.sp, fontWeight: FontWeight.w600, color: AppColors.kTextQuickMenu,),
-                  ],
+                  ),
+                    child: Center(child: ImageView.asset(iconPath, width: 40.w,  height: 40.h,),),
+                  ),
                 ),
-              ),
-            ],
+                SizedBox(height: 15.h,),
+                TextView(text: title, fontSize: 12.sp, fontWeight: FontWeight.w600, color: AppColors.kPrimary1,),
+              ],
+            ),
           ),
 
         ),

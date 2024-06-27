@@ -6,9 +6,11 @@ import 'dart:math';
 // ignore: depend_on_referenced_packages
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:enuaniculturalforummobile/config/app_strings.dart';
+import 'package:enuaniculturalforummobile/model/response/category_response_type.dart';
 import 'package:enuaniculturalforummobile/model/response/local_response/category_response.dart';
 import 'package:enuaniculturalforummobile/model/response/post_response_model.dart';
 import 'package:enuaniculturalforummobile/repository/backend/post_backend.dart';
+import 'package:enuaniculturalforummobile/src/models.dart';
 import 'package:enuaniculturalforummobile/src/utils.dart';
 import 'package:enuaniculturalforummobile/view/components/rich_editor_screen.dart';
 import 'package:enuaniculturalforummobile/view/components/success_screen.dart';
@@ -38,6 +40,7 @@ class PostViewModel extends ChangeNotifier {
       );
   PostResponseModel? postResponseModel;
   CategoryResponse? categoryResponse;
+  CategoryResponseType? categoryResponseType;
 
   bool _validatePassword = true;
 
@@ -54,6 +57,7 @@ class PostViewModel extends ChangeNotifier {
   QuillController get quillController => _quillController;
 
   bool isGettingPosts = true;
+  bool isGettingPostsByCategory = true;
   bool isGettingTenants = true;
   bool isFetchingRentingRequest = true;
   bool isFetchingListingAccessRequest = true;
@@ -368,6 +372,52 @@ class PostViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> getPostByCategories(
+      BuildContext context,
+  {required String slug}
+      ) async {
+    try {
+      isGettingPostsByCategory= true;
+
+      await postService.fetchPostByCategory(slug: slug).then((value) async {
+        if (value != null) {
+          final decodedResponse = jsonDecode(value.toString());
+
+          if (decodedResponse['status'].toString() == 'true') {
+            // showToast(
+            //   msg: decodedResponse['message'].toString(),
+            //   isError: false,
+            // );
+
+            categoryResponseType = CategoryResponseType.fromJson(decodedResponse);
+
+            // isGettingPosts = false;
+            isGettingPostsByCategory= false;
+            notifyListeners();
+          }
+
+          if (decodedResponse['status'].toString() == 'true') {
+            categoryResponseType = CategoryResponseType.fromJson(decodedResponse);
+            isGettingPostsByCategory= false;
+
+            // personalListings = postResponseModel!.data!.listings!.toList();
+            notifyListeners();
+            // check page count if its more than one, on every successful data fetch
+            //   _setCanLoadMoreListings(
+            //       status: int.parse(postResponseModel!.data!.lastPage.toString()) > 1);
+          }
+        }
+      }).whenComplete(() {
+        isGettingPostsByCategory= false;
+        notifyListeners();
+      });
+    } catch (e, s) {
+      logger
+        ..i(checkErrorLogs)
+        ..e(s);
+    }
+  }
+
   Future<void> createNewPost(BuildContext context) async {
     final json = _quillController.document.toDelta().toJson();
     print(json);
@@ -388,7 +438,8 @@ class PostViewModel extends ChangeNotifier {
         description: html,
         category_type: selectedItem.toString(),
           author: _authorController.text,
-        authToken: '7|G0oRsDb8iXRRKgRb4V9OJhRPYTla6Ryk1LPRb4yWf1156a00',
+        // authToken: '7|G0oRsDb8iXRRKgRb4V9OJhRPYTla6Ryk1LPRb4yWf1156a00',
+        authToken: DummyData.accessToken.toString(),
 
       ).then((value) async {
         if (value != null) {

@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:enuaniculturalforummobile/view/screens/dashboard/category_screen/category_screen.dart';
 import 'package:enuaniculturalforummobile/view/screens/dashboard/home_screen/home_screen.dart';
 import 'package:enuaniculturalforummobile/view/screens/dashboard/profile_screens/profile_screen.dart';
 import 'package:enuaniculturalforummobile/view/screens/dashboard/transaction_history_screens/transaction_history_screen.dart';
@@ -35,7 +36,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
   // int profileProvider.currentIndex = 0;
   List<Widget> dashboardPages = [
     const HomeScreen(),
-    const TransactionHistoryScreen(),
+    const CategoryScreen(),
     const ProfileScreen(),
   ];
 

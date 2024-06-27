@@ -215,6 +215,15 @@ class ApiConstants {
         path: '$version/listing/user/$id',
       );
 
+  Uri fetchPostByCategoryUri({
+    required String slug,
+  }) =>
+      Uri(
+        scheme: scheme,
+        host: host,
+        path: '/api/get-post-by-category/$slug',
+      );
+
   Uri fetchSingleListingWithCodeUri({
     required String code,
   }) =>

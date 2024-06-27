@@ -553,7 +553,7 @@ Future<dynamic> displayLogoutDialog(BuildContext context,{
           ),
         ),
         content: TextView(
-          text: '${DummyData.firstName}, would you like to exit the app?',
+          text: 'You are about to logout',
           fontSize: 14.sp,
           maxLines: 2,
           textAlign: TextAlign.center,

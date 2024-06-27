@@ -23,6 +23,11 @@ class AppImages {
   static const historySelectedIconPng = '${_baseUrl}history_img_selected.png';
   static const profileIconPng = '${_baseUrl}profile_img.png';
   static const profileSelectedIconPng = '${_baseUrl}profile_img_selected.png';
+  static const articlesIconPng = '${_baseUrl}articles.png';
+  static const festivalIconPng = '${_baseUrl}festival.png';
+  static const foodIconPng = '${_baseUrl}food.png';
+  static const musicIconPng = '${_baseUrl}music.png';
+  static const emptyListIconPng = '${_baseUrl}empty_list.png';
 
 
   /// Svg images

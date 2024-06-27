@@ -255,6 +255,11 @@ class PostsBackend extends ApiService {
       fetchAllCategoryUri,
       headers: apiHeaderWithToken,
     );
+  }Future<dynamic> fetchPostByCategory({ required String slug}) async {
+    return getMth(
+      fetchPostByCategoryUri(slug: slug),
+      headers: apiHeaderWithToken,
+    );
   }
 
   Future<dynamic> createNewPost({
