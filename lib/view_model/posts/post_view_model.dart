@@ -8,6 +8,7 @@ import 'package:currency_text_input_formatter/currency_text_input_formatter.dart
 import 'package:enuaniculturalforummobile/config/app_strings.dart';
 import 'package:enuaniculturalforummobile/model/response/category_response_type.dart';
 import 'package:enuaniculturalforummobile/model/response/local_response/category_response.dart';
+import 'package:enuaniculturalforummobile/model/response/news_response.dart';
 import 'package:enuaniculturalforummobile/model/response/post_response_model.dart';
 import 'package:enuaniculturalforummobile/repository/backend/post_backend.dart';
 import 'package:enuaniculturalforummobile/src/models.dart';
@@ -207,6 +208,9 @@ class PostViewModel extends ChangeNotifier {
   int get listingPage => _listingPage;
   String? selectedItem;
 
+  NewsResponse? newsResponse;
+  List<NewsData> newsData = [];
+
   void backBtnControl(
     BuildContext context,
   ) {
@@ -372,6 +376,8 @@ class PostViewModel extends ChangeNotifier {
     }
   }
 
+
+
   Future<void> getPostByCategories(
       BuildContext context,
   {required String slug}
@@ -409,6 +415,47 @@ class PostViewModel extends ChangeNotifier {
         }
       }).whenComplete(() {
         isGettingPostsByCategory= false;
+        notifyListeners();
+      });
+    } catch (e, s) {
+      logger
+        ..i(checkErrorLogs)
+        ..e(s);
+    }
+  }
+
+
+  Future<void> getNews(
+      BuildContext context,
+      ) async {
+    try {
+      await postService.fetchAllCategories().then((value) async {
+        if (value != null) {
+          final decodedResponse = jsonDecode(value.toString());
+
+          if (decodedResponse['status'].toString() == 'true') {
+            // showToast(
+            //   msg: decodedResponse['message'].toString(),
+            //   isError: false,
+            // );
+
+            categoryResponse = CategoryResponse.fromJson(decodedResponse);
+
+            // isGettingPosts = false;
+            notifyListeners();
+          }
+
+          if (decodedResponse['status'].toString() == 'true') {
+            categoryResponse = CategoryResponse.fromJson(decodedResponse);
+            // personalListings = postResponseModel!.data!.listings!.toList();
+            notifyListeners();
+            // check page count if its more than one, on every successful data fetch
+            //   _setCanLoadMoreListings(
+            //       status: int.parse(postResponseModel!.data!.lastPage.toString()) > 1);
+          }
+        }
+      }).whenComplete(() {
+        // isGettingPosts = false;
         notifyListeners();
       });
     } catch (e, s) {
@@ -482,31 +529,73 @@ class PostViewModel extends ChangeNotifier {
     }
   }
 
-  // Future<dynamic> getMoreListings() async {
-  //   await listingService.fetchPersonalListing(page: _listingPage).then((value) {
-  //     if (value != null) {
-  //       final decodedResponse = jsonDecode(value.toString());
-  //
-  //       if (decodedResponse['status'].toString() == 'true') {
-  //         postResponseModel = PostResponseModel.fromJson(decodedResponse);
-  //         personalListings.addAll(postResponseModel!.data!.listings!.toList());
-  //         notifyListeners();
-  //         if (int.parse(postResponseModel!.data!.lastPage.toString()) > _listingPage) {
-  //           _listingPage++;
-  //           _setCanLoadMoreListings(status: true);
-  //         } else {
-  //           _setCanLoadMoreListings(status: false);
-  //         }
-  //       }
-  //       // check page count if its more than one, on every successful data fetch
-  //       // update page count on every successful data fetch
-  //     }
-  //   }).onError((error, stackTrace) {
-  //     logger
-  //       ..e(error)
-  //       ..e(stackTrace);
-  //   });
-  // }
+  ///Method to get personal properties
+  Future<void> getNewsFromDb(
+      BuildContext context,
+      ) async {
+    try {
+      await postService.fetchNewsDb().then((value) async {
+        if (value != null) {
+          final decodedResponse = jsonDecode(value.toString());
+
+          // if (decodedResponse['status'].toString() == 'true') {
+          //   // showToast(
+          //   //   msg: decodedResponse['message'].toString(),
+          //   //   isError: false,
+          //   // );
+          //
+          //   personalListings =
+          //       PersonalListingsResponse.fromJson(decodedResponse).data!.listings!.toList();
+          //
+          //   isGettingPersonalListings = false;
+          //   notifyListeners();
+          // }
+
+          if (decodedResponse['status'].toString() == 'true') {
+            newsResponse = NewsResponse.fromJson(decodedResponse);
+            newsData = newsResponse!.data!.news!.data!.toList();
+            notifyListeners();
+            // check page count if its more than one, on every successful data fetch
+            _setCanLoadMoreListings(
+                status: int.parse(newsResponse!.data!.news!.currentPage.toString()) > 1);
+          }
+        }
+      }).whenComplete(() {
+        // isGettingPersonalListings = false;
+        notifyListeners();
+      });
+    } catch (e, s) {
+      logger
+        ..i(checkErrorLogs)
+        ..e(s);
+    }
+  }
+
+  Future<dynamic> getMoreNews() async {
+    await postService.fetchNewsDb(page: _listingPage).then((value) {
+      if (value != null) {
+        final decodedResponse = jsonDecode(value.toString());
+
+        if (decodedResponse['status'].toString() == 'true') {
+          newsResponse = NewsResponse.fromJson(decodedResponse);
+          newsData.addAll(newsResponse!.data!.news!.data!.toList());
+          notifyListeners();
+          if (int.parse(newsResponse!.data!.news!.currentPage.toString()) > _listingPage) {
+            _listingPage++;
+            _setCanLoadMoreListings(status: true);
+          } else {
+            _setCanLoadMoreListings(status: false);
+          }
+        }
+        // check page count if its more than one, on every successful data fetch
+        // update page count on every successful data fetch
+      }
+    }).onError((error, stackTrace) {
+      logger
+        ..e(error)
+        ..e(stackTrace);
+    });
+  }
 
   // ///Method to get single listing by Id
   // Future<void> getSingleListing(BuildContext context, {required String id}) async {

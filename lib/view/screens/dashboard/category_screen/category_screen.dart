@@ -88,6 +88,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                 iconPath: AppImages.foodIconPng,
                 onPressed: () {
                   paymentProvider.clearData();
+                  // postProvider.getNewsFromDb(context);
                   navigatePush(context, const CategoryDetailsScreen(title: 'Food', slug: 'food'));
 
 

@@ -70,6 +70,15 @@ class PostsBackend extends ApiService {
     );
   }
 
+  Future<dynamic> fetchNewsDb({
+    int? page = 1,
+  }) async {
+    return getMth(
+      fetchNewsDbUri(page: page.toString()),
+      headers: apiHeaderWithToken,
+    );
+  }
+
   Future<dynamic> viewTenants() async {
     return getMth(
       viewTenantsUri,
@@ -255,7 +264,16 @@ class PostsBackend extends ApiService {
       fetchAllCategoryUri,
       headers: apiHeaderWithToken,
     );
-  }Future<dynamic> fetchPostByCategory({ required String slug}) async {
+  }
+
+  Future<dynamic> fetchNews() async {
+    return getMth(
+      fetchAllCategoryUri,
+      headers: apiHeaderWithToken,
+    );
+  }
+
+  Future<dynamic> fetchPostByCategory({ required String slug}) async {
     return getMth(
       fetchPostByCategoryUri(slug: slug),
       headers: apiHeaderWithToken,

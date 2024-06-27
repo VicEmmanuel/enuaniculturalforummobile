@@ -1,4 +1,5 @@
 
+import 'package:enuaniculturalforummobile/view_model/auth/auth_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:enuaniculturalforummobile/config/app_strings.dart';
@@ -110,16 +111,19 @@ Future<void> userRegistration(BuildContext context) async {
           logger.w(decodeResponse);
           if (value['status'].toString() == 'true') {
 
+
+            await AuthViewModel().userAutoLogin(context, email: registerEmailController.text.toString(), password: registerPwdController.text.toString());
             _buttonRegisterState = CustomButtonState(
               buttonState: ButtonState.idle,
               text: createAccount,
             );
-
             showToast(
-              msg: value['data'].toString(),
+              msg: value['message'].toString(),
               isError: false,
             );
+
             DummyData.emailAddress = _registerEmailController.text.toString();
+
             // navigatePush(context,  EmailVerificationScreen(
             //   title: emailCheck,
             //   subTitle: sentOTPUserEmail,

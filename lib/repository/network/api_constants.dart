@@ -118,6 +118,16 @@ class ApiConstants {
           'page': page,
         },);
 
+  Uri fetchNewsDbUri({
+    required String page,
+  }) =>
+      Uri(
+        scheme: scheme, host: host, path: '/api/news',
+        queryParameters: {
+          // 'limit': '10',
+          'page': page,
+        },);
+
 
 
   Uri get createNewListingUri =>
@@ -163,6 +173,8 @@ class ApiConstants {
   Uri get fetchAllPostsUri => Uri(
       scheme: scheme, host: host, path: '/api/get-all-posts');
   Uri get fetchAllCategoryUri => Uri(
+      scheme: scheme, host: host, path: '/api/get-categories');
+  Uri get fetchNewsUri => Uri(
       scheme: scheme, host: host, path: '/api/get-categories');
   Uri get createNewPostUri =>
       Uri(scheme: scheme, host: host, path: '/api/create-post');

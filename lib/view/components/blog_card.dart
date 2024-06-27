@@ -56,6 +56,7 @@ class BlogCard extends ConsumerWidget {
                     image: DecorationImage(
                       fit: BoxFit.cover,
                       image: NetworkImage(
+
                         imageText.toString(),
                       ),
                       // FileImage(listingViewProvider.image!)),

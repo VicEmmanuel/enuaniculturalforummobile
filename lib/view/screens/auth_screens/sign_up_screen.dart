@@ -59,7 +59,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                        CustomTextField(
                         fieldLabel: fullName,
                         hint: fullName,
-                        controller: registrationProvider.firstNameController,
+                        controller: registrationProvider.fullNameController,
                         validator: (value) =>
                             Validators().validateEmptyTextField(value),
                       ),
@@ -68,7 +68,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       ),
                        CustomTextField(
                         fieldLabel: emailAddressText,
-                        hint: emailExample,
+                         controller: registrationProvider.registerEmailController,
+
+                         hint: emailExample,
                         validator: (value) => Validators().validateEmail(value),
                       ),
 
