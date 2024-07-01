@@ -95,12 +95,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 onTap: () {},
               ),
               divider(),
-              singleProfileOptions(
-                title: beneficiariesText,
-                iconPath: AppImages.beneficiariesIcon,
-                onTap: () {},
-              ),
-              divider(),
+              // singleProfileOptions(
+              //   title: beneficiariesText,
+              //   iconPath: AppImages.beneficiariesIcon,
+              //   onTap: () {},
+              // ),
+              // divider(),
               singleProfileOptions(
                 title: changePasswordText,
                 iconPath: AppImages.lockIcon,
@@ -310,7 +310,7 @@ class UserAccountDetails extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextView(
-                text: name,
+                text: DummyData.accessToken ==null ?'EnuaniCulturalForum':name,
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
 
@@ -319,7 +319,7 @@ class UserAccountDetails extends ConsumerWidget {
                 height: 4.h,
               ),
               TextView(
-                text: emailAddress,
+                text: DummyData.emailAddress == null?'':emailAddress,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w400,
                 color: AppColors.kBlack4.withOpacity(0.4),

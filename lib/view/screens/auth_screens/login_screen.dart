@@ -83,22 +83,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 SizedBox(
                   height: 2.h,
                 ),
-                Align(
-                    alignment: Alignment.bottomRight,
-                    child: GestureDetector(
-                      onTap: () {
-                        navigatePush(context,const RecoverPasswordScreen());
-
-                      },
-                      child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 10.h),
-                          // color: Colors.red,
-                          child: TextView(
-                            text: forgotPasswordText,
-                            fontSize: 14.sp,
-                            color: AppColors.kPrimary1,
-                          )),
-                    )),
+                // Align(
+                //     alignment: Alignment.bottomRight,
+                //     child: GestureDetector(
+                //       onTap: () {
+                //         navigatePush(context,const RecoverPasswordScreen());
+                //
+                //       },
+                //       child: Container(
+                //           padding: EdgeInsets.symmetric(vertical: 10.h),
+                //           // color: Colors.red,
+                //           child: TextView(
+                //             text: forgotPasswordText,
+                //             fontSize: 14.sp,
+                //             color: AppColors.kPrimary1,
+                //           )),
+                //     )),
                 SizedBox(height: 32.h),
                 DefaultButtonMain(
                   text: logIn,
