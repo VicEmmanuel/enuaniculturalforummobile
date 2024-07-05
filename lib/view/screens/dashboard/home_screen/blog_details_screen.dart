@@ -14,6 +14,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:share_plus/share_plus.dart';
 
 class BlogDetailsScreen extends ConsumerStatefulWidget {
   final String title;
@@ -70,6 +71,10 @@ class _BlogDetailsScreenState extends ConsumerState<BlogDetailsScreen> {
         context,
         backgroundColor: theme.scaffoldBackgroundColor,
         arrowBackColor: theme.colorScheme.primary,
+        trailing: IconButton(onPressed: (){
+          Share.share('https://enuaniculturalforum.com/blog/${widget.slug}');
+
+        }, icon: const Icon(Icons.share))
       ),
       body: SafeArea(
         child: Padding(
