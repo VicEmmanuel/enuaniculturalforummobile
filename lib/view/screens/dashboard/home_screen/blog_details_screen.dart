@@ -172,10 +172,11 @@ class _BlogDetailsScreenState extends ConsumerState<BlogDetailsScreen> {
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5))),
             onPressed: () async {
+
               if( DummyData.accessToken != null){
                 logger.wtf(DummyData.role);
                 if(DummyData.role == 1.toString()){
-                  navigatePush(context, PostCreateScreen());
+                  navigatePush(context, EditPostScreen());
                 }else{
                   displayAdminEditPermissionDialog(context,
                       themeMode: themeProvider, theme: theme);

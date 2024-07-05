@@ -571,7 +571,7 @@ class PostViewModel extends ChangeNotifier {
                     newPage: DashBoardScreen(),
                     navigateButtonText: continueText));
 
-            // await clearData();
+            await clearData();
             notifyListeners();
           } else {
             showToast(
@@ -972,5 +972,8 @@ class PostViewModel extends ChangeNotifier {
   clearData(){
     titleController.clear();
     authorController.clear();
+    selectedItem = null;
+    propertyImageList.clear();
+    quillController.clear();
   }
 }

@@ -217,7 +217,7 @@ class _EditQuillEditorWidgetState extends ConsumerState<EditQuillEditorWidget> {
     var postController = ref.watch(postViewModel);
     var theme = Theme.of(context);
     var themeProvider = ref.watch(themeViewModel).themeMode;
-    return postController.isCreatingPost?SuccessLoadingScreen(informationText: 'Editing Post'): Scaffold(
+    return postController.isCreatingPost?SuccessLoadingScreen(informationText: 'Updating Post'): Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBars.mainAppBar(
           context,
