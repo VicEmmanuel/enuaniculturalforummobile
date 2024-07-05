@@ -844,6 +844,108 @@ Future<dynamic> displayLoginPermissionDialog(
   );
 }
 
+
+Future<dynamic> displayAdminPermissionDialog(
+    BuildContext context, {
+      required ThemeMode themeMode,
+      required ThemeData theme,
+    }) async {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape:
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+        backgroundColor: themeMode == ThemeMode.light ? Colors.white : theme.cardColor,
+        title: Center(
+          child: TextView(
+            text: 'Create Post',
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        content: TextView(
+          text: 'Request permission from admin to make a post!',
+          fontSize: 14.sp,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          fontWeight: FontWeight.w500,
+        ),
+        actions: <Widget>[
+          Column(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+
+              DefaultButtonMain(
+                color: Colors.white,
+                textColor: AppColors.kPrimary1,
+                text: 'Back',
+                borderColor: AppColors.kPrimary1,
+                // borderRadius: 38.r,
+                height: 48.h,
+                onPressed: () {
+                  navigateBack(context);
+                },
+              ),
+            ],
+          )
+        ],
+      );
+    },
+  );
+}
+
+
+Future<dynamic> displayAdminEditPermissionDialog(
+    BuildContext context, {
+      required ThemeMode themeMode,
+      required ThemeData theme,
+    }) async {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape:
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+        backgroundColor: themeMode == ThemeMode.light ? Colors.white : theme.cardColor,
+        title: Center(
+          child: TextView(
+            text: 'Edit Post',
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        content: TextView(
+          text: 'Request permission from admin to edit this post!',
+          fontSize: 14.sp,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          fontWeight: FontWeight.w500,
+        ),
+        actions: <Widget>[
+          Column(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+
+              DefaultButtonMain(
+                color: Colors.white,
+                textColor: AppColors.kPrimary1,
+                text: 'Back',
+                borderColor: AppColors.kPrimary1,
+                // borderRadius: 38.r,
+                height: 48.h,
+                onPressed: () {
+                  navigateBack(context);
+                },
+              ),
+            ],
+          )
+        ],
+      );
+    },
+  );
+}
+
 Future<dynamic> displayPostConfirmationDialog(
     BuildContext context, {
       required ThemeMode themeMode,

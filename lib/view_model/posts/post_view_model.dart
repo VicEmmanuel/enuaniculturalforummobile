@@ -969,4 +969,8 @@ class PostViewModel extends ChangeNotifier {
     return delta;
   }
 
+  clearData(){
+    titleController.clear();
+    authorController.clear();
+  }
 }

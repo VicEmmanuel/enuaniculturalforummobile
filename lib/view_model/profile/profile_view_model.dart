@@ -506,6 +506,8 @@ class ProfileViewModel extends ChangeNotifier {
           if (decodedResponse['status'].toString() == 'true') {
             _profileData = UserResponseModel.fromJson(decodedResponse);
             DummyData.lastName = _profileData!.data!.user!.name.toString();
+            DummyData.lastName = _profileData!.data!.user!.name.toString();
+            DummyData.role = _profileData!.data!.user!.role.toString();
             // DummyData.firstName = _profileData!.data!.firstName.toString();
             logger.wtf(DummyData.firstName);
             // DummyData.phoneNumber = _profileData!.data!.phone ?? "";

@@ -2,7 +2,9 @@ import 'package:enuaniculturalforummobile/config/app_strings.dart';
 import 'package:enuaniculturalforummobile/model/local/dummy_data.dart';
 import 'package:enuaniculturalforummobile/src/components.dart';
 import 'package:enuaniculturalforummobile/src/config.dart';
+import 'package:enuaniculturalforummobile/src/providers.dart';
 import 'package:enuaniculturalforummobile/src/screens.dart';
+import 'package:enuaniculturalforummobile/src/utils.dart';
 import 'package:enuaniculturalforummobile/utils/alerts.dart';
 import 'package:enuaniculturalforummobile/utils/carousel_slider.dart';
 import 'package:enuaniculturalforummobile/utils/navigators.dart';
@@ -50,6 +52,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     var postProvider = ref.watch(postViewModel);
+    var profileProvider = ref.watch(profileViewModel);
     var themeProvider = ref.watch(themeViewModel).themeMode;
     var theme = Theme.of(context);
     return WillPopScope(
@@ -85,11 +88,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 width: 100.w,
                               ),
                             ),
-                            // postProvider.isGettingPosts
-                            //     ? ShimmerCarousel()
-                            //     : CarouselWithIndicators(
-                            //         items: [''],
-                            //       ),
+                            postProvider.isGettingPosts
+                                ? ShimmerCarousel()
+                                : CarouselWithIndicators(
+                                    items: [''],
+                                  ),
                             SizedBox(
                               height: 10.h,
                             ),
@@ -103,6 +106,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               height: 5.h,
                             ),
                             posts(),
+
                           ],
                         ),
                       )
@@ -121,10 +125,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(5))),
               onPressed: () async {
-                DummyData.accessToken != null
-                    ? navigatePush(context, PostCreateScreen())
-                    : displayLoginPermissionDialog(context,
+                if( DummyData.accessToken != null){
+                  logger.wtf(DummyData.role);
+                  if(DummyData.role == 1.toString()){
+                    navigatePush(context, PostCreateScreen());
+                  }else{
+                    displayAdminPermissionDialog(context,
                         themeMode: themeProvider, theme: theme);
+                  }
+
+                }else{
+                  displayLoginPermissionDialog(context,
+                      themeMode: themeProvider, theme: theme);
+                }
+
               },
               child: const Icon(
                 Icons.add,

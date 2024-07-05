@@ -2,7 +2,7 @@
 
 class DummyData {
   static String? emailAddress;
-  static String? role;
+  static String? role ="";
   static String? password = "";
   static String username = '';
   static String lastname = '';

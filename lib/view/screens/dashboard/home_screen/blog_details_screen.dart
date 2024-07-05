@@ -163,7 +163,7 @@ class _BlogDetailsScreenState extends ConsumerState<BlogDetailsScreen> {
           ),
         ),
       ),
-        floatingActionButton: SizedBox(
+        floatingActionButton:DummyData.accessToken!=null?  SizedBox(
           height: 50,
           width: 50,
           child: FloatingActionButton(
@@ -172,17 +172,30 @@ class _BlogDetailsScreenState extends ConsumerState<BlogDetailsScreen> {
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5))),
             onPressed: () async {
-              DummyData.accessToken != null
-                  ? navigatePush(context, EditPostScreen())
-                  : displayLoginPermissionDialog(context,
-                  themeMode: themeProvider, theme: theme);
+              if( DummyData.accessToken != null){
+                logger.wtf(DummyData.role);
+                if(DummyData.role == 1.toString()){
+                  navigatePush(context, PostCreateScreen());
+                }else{
+                  displayAdminEditPermissionDialog(context,
+                      themeMode: themeProvider, theme: theme);
+                }
+
+              }else{
+                displayLoginPermissionDialog(context,
+                    themeMode: themeProvider, theme: theme);
+              }
+              // DummyData.accessToken != null
+              //     ? navigatePush(context, EditPostScreen())
+              //     : displayLoginPermissionDialog(context,
+              //     themeMode: themeProvider, theme: theme);
             },
             child: const Icon(
               Icons.edit,
               color: Colors.white,
             ),
           ),
-        )
+        ): null
     );
   }
 }
