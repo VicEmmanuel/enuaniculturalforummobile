@@ -126,7 +126,7 @@ class _CategoryDetailsScreenState extends ConsumerState<CategoryDetailsScreen> {
                           createdAt: item.createdAt.toString(),
                           author: item.author.toString(),
                           category: item.categoryType.toString(),
-                          imagePath: item.filePath.toString(),
+                          imagePath: item.filePath.toString(), slug: item.slug.toString(),
                         ));
                   },
                   child: BlogCard(

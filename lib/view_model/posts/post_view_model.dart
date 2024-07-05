@@ -17,6 +17,9 @@ import 'package:enuaniculturalforummobile/view/components/rich_editor_screen.dar
 import 'package:enuaniculturalforummobile/view/components/success_screen.dart';
 import 'package:enuaniculturalforummobile/view/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_quill/quill_delta.dart';
+import 'package:html/parser.dart' as htmlParser;
+import 'package:html/dom.dart' as dom;
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -55,7 +58,12 @@ class PostViewModel extends ChangeNotifier {
   TextEditingController get authorController => _authorController;
 
   final QuillController _quillController = QuillController.basic();
+  // final QuillController _editQuillController = QuillController.basic();
+  late QuillController _editQuillController;
   QuillController get quillController => _quillController;
+  QuillController get editQuillController => _editQuillController;
+   QuillController? editQuillMainController;
+
 
   bool isGettingPosts = true;
   bool isGettingPostsByCategory = true;
@@ -101,6 +109,8 @@ class PostViewModel extends ChangeNotifier {
   // int get parkInDuration => _parkInDuration!;
   String? _feeAmount;
   String get feeAmount => _feeAmount!;
+  String? slug;
+
 
   final TextEditingController _editTextController = TextEditingController();
 
@@ -130,9 +140,9 @@ class PostViewModel extends ChangeNotifier {
   final TextEditingController _propertySizeController = TextEditingController();
 
   ///Editing Listing Controllers
-  final TextEditingController _editPropertyNameController =
+  final TextEditingController _editPostNameController =
       TextEditingController();
-  final TextEditingController _editAddressController = TextEditingController();
+  final TextEditingController _editAuthorController = TextEditingController();
   final TextEditingController _editCityController = TextEditingController();
   final TextEditingController _editDescriptionController =
       TextEditingController();
@@ -171,10 +181,10 @@ class PostViewModel extends ChangeNotifier {
   // List<TextEditingController> editAmenityControllers = [];
   List<Map<String, dynamic>>? editFeesValues = [];
 
-  TextEditingController get editPropertyNameController =>
-      _editPropertyNameController;
+  TextEditingController get editPostNameController =>
+      _editPostNameController;
 
-  TextEditingController get editAddressNameController => _editAddressController;
+  TextEditingController get editAuthorController => _editAuthorController;
   TextEditingController get editCityController => _editCityController;
   TextEditingController get editDescriptionController =>
       _editDescriptionController;
@@ -207,6 +217,8 @@ class PostViewModel extends ChangeNotifier {
   int _listingPage = 2;
   int get listingPage => _listingPage;
   String? selectedItem;
+  String? editSelectedItem;
+  String? editDetails;
 
   NewsResponse? newsResponse;
   List<NewsData> newsData = [];
@@ -282,6 +294,59 @@ class PostViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+
+  ///
+  ///
+  nextBtnEditControl(
+      BuildContext context,
+      ) async {
+    switch (_currentListIndex) {
+      case 0:
+        if (editPostNameController.text.isEmpty) {
+          showToast(msg: 'Enter Post Title', isError: true);
+        } else if (editAuthorController.text.isEmpty) {
+          showToast(msg: 'Enter Authors Name', isError: true);
+        } else if (editSelectedItem == null) {
+          showToast(msg: 'Select Category', isError: true);
+        } else {
+          // _currentListIndex++;
+          return await navigatePush(context, EditQuillEditorWidget(detail: editDetails.toString(),));
+        }
+    // case 2:
+    //   if (pickUpDate != null
+    //       && pickUpTime != null
+    //   ) {
+    //     _currentListIndex++;
+    //   } else {
+    //     showToast(msg: 'Select date and time', isError: true);
+    //   }
+      default:
+        if (_quillController.toString().isEmpty) {
+          showToast(msg: 'Invalid bank account number', isError: true);
+        } else {
+          return await navigatePush(context, EditQuillEditorWidget(detail: editDetails.toString(),));
+        }
+
+    // _currentListIndex++;
+    // _currentListIndex++;
+    //   case 5:
+    //     if (propertyImageList.isNotEmpty) {
+    //       _currentListIndex++;
+    //     } else {
+    //       showToast(msg: addImage, isError: true);
+    //     }
+    // default:
+    //   if (propertyImageList.isNotEmpty) {
+    //     return await navigatePush(context, const PublishRecycleScreen());
+    //     // break;
+    //   } else {
+    //     showToast(msg: 'Add Image', isError: true);
+    //   }
+    // return navigatePush(context, const PublishScreen());
+    }
+
+    notifyListeners();
+  }
   //A Method that copies a string, value to clipboard.
   void copyToClipBoard(context, {required String value}) {
     Clipboard.setData(
@@ -529,6 +594,71 @@ class PostViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> updatePost(BuildContext context,{
+    required String slug
+  }) async {
+    final json = editQuillMainController!.document.toDelta().toJson();
+    print(json);
+    final converter = QuillDeltaToHtmlConverter(
+      json,
+      ConverterOptions.forEmail(),
+    );
+    final html = converter.convert();
+    // List<String> trimmedAmenityValues = trimList(amenityValues);
+    isCreatingPost = true;
+    logger.f(feesValues);
+    notifyListeners();
+    try {
+      await postService
+          .updatePost(
+        title: _editPostNameController.text,
+        description: html,
+        category_type: editSelectedItem.toString(),
+        author: editAuthorController.text,
+        // authToken: '7|G0oRsDb8iXRRKgRb4V9OJhRPYTla6Ryk1LPRb4yWf1156a00',
+        authToken: DummyData.accessToken.toString(), slug: slug,
+
+      ).then((value) async {
+        if (value != null) {
+          // final decodedResponse = jsonDecode(value.toString());
+
+          if (value['status'].toString() == 'true') {
+            showToast(
+              msg: value['message'].toString(),
+              isError: false,
+            );
+            isCreatingPost = false;
+            getAllPosts(context);
+            await navigateReplace(
+                context,
+                const SuccessScreen(
+                    infoText: 'Post Updated Successfully',
+                    newPage: DashBoardScreen(),
+                    navigateButtonText: continueText));
+
+            // await clearData();
+            notifyListeners();
+          } else {
+            showToast(
+              msg: value['message'].toString(),
+              isError: true,
+            );
+            // navigateBack(context);
+            isCreatingPost = false;
+            notifyListeners();
+          }
+        }
+      }).whenComplete(() {
+        isCreatingPost = false;
+        notifyListeners();
+      });
+    } catch (e, s) {
+      logger
+        ..i(checkErrorLogs)
+        ..e(s);
+    }
+  }
+
   ///Method to get personal properties
   Future<void> getNewsFromDb(
       BuildContext context,
@@ -747,5 +877,96 @@ class PostViewModel extends ChangeNotifier {
       propertyImageList.removeAt(index);
       notifyListeners();
     }
+
+
   }
+  insertStringAtDocumentBeginning(String str){
+
+    editQuillController.document.insert(0, str);
+  }
+
+
+  // Function to convert HTML to Quill Delta
+  Delta htmlToQuillDelta(String html) {
+    var delta = Delta();
+    var document = htmlParser.parse(html);
+    var body = document.body;
+
+    if (body != null) {
+      void parseNode(dom.Node node) {
+        if (node is dom.Text) {
+          delta.insert(node.text);
+        } else if (node is dom.Element) {
+          switch (node.localName) {
+            case 'b':
+            case 'strong':
+              delta.insert(node.text, {'bold': true});
+              break;
+            case 'i':
+            case 'em':
+              delta.insert(node.text, {'italic': true});
+              break;
+            case 'u':
+              delta.insert(node.text, {'underline': true});
+              break;
+            case 'a':
+              var attributes = {'link': node.attributes['href']};
+              delta.insert(node.text, attributes);
+              break;
+            case 'h1':
+              delta.insert(node.text, {'header': 1});
+              delta.insert('\n');
+              break;
+            case 'h2':
+              delta.insert(node.text, {'header': 2});
+              delta.insert('\n');
+              break;
+            case 'h3':
+              delta.insert(node.text, {'header': 3});
+              delta.insert('\n');
+              break;
+            case 'h4':
+              delta.insert(node.text, {'header': 4});
+              delta.insert('\n');
+              break;
+            case 'h5':
+              delta.insert(node.text, {'header': 5});
+              delta.insert('\n');
+              break;
+            case 'h6':
+              delta.insert(node.text, {'header': 6});
+              delta.insert('\n');
+              break;
+            case 'ul':
+              node.children.forEach((li) {
+                delta.insert(li.text + '\n', {'list': 'bullet'});
+              });
+              break;
+            case 'ol':
+              int index = 1;
+              node.children.forEach((li) {
+                delta.insert(index.toString() + '. ' + li.text + '\n', {'list': 'ordered'});
+                index++;
+              });
+              break;
+            case 'p':
+              node.nodes.forEach(parseNode);
+              delta.insert('\n');
+              break;
+            case 'br':
+              delta.insert('\n');
+              break;
+            default:
+              node.nodes.forEach(parseNode);
+              break;
+          }
+        }
+      }
+
+      body.nodes.forEach(parseNode);
+    }
+
+    return delta;
+  }
+
 }

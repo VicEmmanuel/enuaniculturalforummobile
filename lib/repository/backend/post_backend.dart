@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:enuaniculturalforummobile/repository/services/api/api_service.dart';
+import 'package:enuaniculturalforummobile/src/utils.dart';
 
 class PostsBackend extends ApiService {
   Future<dynamic> fetchListings({
@@ -342,6 +343,58 @@ class PostsBackend extends ApiService {
       rethrow;
     }
   }
+
+
+  Future<dynamic> updatePost({
+    required String title,
+    required String description,
+    required String category_type,
+    required String author,
+    required String authToken,
+    required String slug, // Pass the auth token here
+  }) async {
+    try {
+      logger.wtf('https://enuaniculturalforum.com/api/update-post/$slug');
+      var jsonData = {
+        'title': title,
+        'description': description,
+        'author': author,
+        'category_type': category_type,
+      };
+
+      var response = await Dio().patch(
+        'https://enuaniculturalforum.com/api/update-post/$slug',
+        data: jsonData,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $authToken',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      // Log the full response for debugging
+      print("Response status: ${response.statusCode}");
+      print("Response headers: ${response.headers}");
+      print("Response body: ${response.data}");
+
+      if (response.statusCode == 302) {
+        print("Redirection detected. Location: ${response.headers['location']}");
+      }
+
+      final decodedResponse = response.data;
+      return decodedResponse;
+    } catch (e) {
+      if (e is DioError) {
+        print("DioError: ${e.response}");
+        print("DioError Response data: ${e.response?.data}");
+      } else {
+        print("Error: $e");
+      }
+      rethrow;
+    }
+  }
+
 
   // Future<dynamic> createNewPost({
   //   required List<File?>? images,

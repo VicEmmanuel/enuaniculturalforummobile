@@ -62,7 +62,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Scaffold(
           backgroundColor: Colors.white,
           body: SafeArea(
-            child: XResponsiveWrap.mobile(
+            child:
+            XResponsiveWrap.mobile(
               onRefresh: () => postProvider
                   .getAllPosts(context)
                   .then((value) => postProvider.getAllCategories(context)),
@@ -84,11 +85,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 width: 100.w,
                               ),
                             ),
-                            postProvider.isGettingPosts
-                                ? ShimmerCarousel()
-                                : CarouselWithIndicators(
-                                    items: [''],
-                                  ),
+                            // postProvider.isGettingPosts
+                            //     ? ShimmerCarousel()
+                            //     : CarouselWithIndicators(
+                            //         items: [''],
+                            //       ),
                             SizedBox(
                               height: 10.h,
                             ),
@@ -259,7 +260,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           createdAt: item.createdAt.toString(),
                           author: item.author.toString(),
                           category: item.categoryType.toString(),
-                          imagePath: item.filePath.toString(),
+                          imagePath: item.filePath.toString(), slug: item.slug.toString(),
                         ));
                   },
                   child: BlogCard(

@@ -821,6 +821,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  quill_html_converter:
+    dependency: "direct main"
+    description:
+      name: quill_html_converter
+      sha256: b6a49f2d3504f4289a71e39e343b593ec84db5fc3c842b6ad409ed58fcd27cb7
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.5.3"
   quiver:
     dependency: transitive
     description:

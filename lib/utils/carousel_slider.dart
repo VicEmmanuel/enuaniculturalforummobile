@@ -122,7 +122,8 @@ class _CarouselWithIndicatorsState
                               .toString(),
                           imagePath: postProvider
                               .postResponseModel!.data!.posts![index].filePath
-                              .toString(),
+                              .toString(), slug: postProvider
+                            .postResponseModel!.data!.posts![index].slug.toString(),
                         ));
                   },
                   child: Column(

@@ -66,6 +66,7 @@ dependencies:
 #  flutter_quill: ^9.3.1
   flutter_quill: ^9.4.6
   vsc_quill_delta_to_html: ^1.0.5
+  quill_html_converter: ^9.5.3
 
 dev_dependencies:
   flutter_test:
