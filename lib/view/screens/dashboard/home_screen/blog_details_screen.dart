@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:enuaniculturalforummobile/src/components.dart';
 import 'package:enuaniculturalforummobile/src/config.dart';
 import 'package:enuaniculturalforummobile/src/models.dart';
@@ -89,7 +90,7 @@ class _BlogDetailsScreenState extends ConsumerState<BlogDetailsScreen> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.r),
                       image: DecorationImage(
-                          image: NetworkImage(widget.imagePath),
+                          image: CachedNetworkImageProvider(widget.imagePath),
                           fit: BoxFit.cover)),
                 ),
                 SizedBox(

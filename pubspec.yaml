@@ -42,9 +42,10 @@ dependencies:
   logger: ^2.0.2+1
   dio: ^5.4.0
   shared_preferences: ^2.1.2
-#  intl: ^0.18.1
+  #  intl: ^0.18.1
   intl: any
-  image_picker: ^0.8.4+3
+#  image_picker: ^0.8.4+3
+  image_picker: ^1.0.4
   flutter_screenutil: ^5.6.0
   pin_code_fields: any
   jwt_decode: ^0.3.1
@@ -62,9 +63,10 @@ dependencies:
   shimmer: ^3.0.0
   flutter_html: any
   carousel_slider: any
-  rich_editor: ^0.0.8
-#  flutter_quill: ^9.3.1
+#  rich_editor: ^0.0.8
+  #  flutter_quill: ^9.3.1
   flutter_quill: ^9.4.6
+  flutter_quill_extensions: ^9.4.5
   vsc_quill_delta_to_html: ^1.0.5
   quill_html_converter: ^9.5.3
 

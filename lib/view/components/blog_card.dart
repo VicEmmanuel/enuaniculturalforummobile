@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:enuaniculturalforummobile/src/components.dart';
 import 'package:enuaniculturalforummobile/src/config.dart';
 import 'package:enuaniculturalforummobile/src/utils.dart';
@@ -31,7 +32,7 @@ class BlogCard extends ConsumerWidget {
       padding: EdgeInsets.only(bottom: 10.h),
       child: SizedBox(
         width: 360.w,
-        height: 120.h,
+        height: 121.h,
         child: Card(
           color: theme.cardColor,
           elevation: 1.0,
@@ -42,24 +43,19 @@ class BlogCard extends ConsumerWidget {
             children: [
               Expanded(
                 flex: 1,
-                child: Container(
+                child:
+                Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(
-                        8.r,
-                      ),
-                      bottomLeft: Radius.circular(
-                        8.r,
-                      ),
+                      topLeft: Radius.circular(8.r),
+                      bottomLeft: Radius.circular(8.r),
                     ),
                     color: AppColors.kTransparent,
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage(
-
+                      image: CachedNetworkImageProvider(
                         imageText.toString(),
                       ),
-                      // FileImage(listingViewProvider.image!)),
                     ),
                   ),
                 ),

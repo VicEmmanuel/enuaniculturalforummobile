@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:enuaniculturalforummobile/utils/color_extension.dart';
 import 'package:enuaniculturalforummobile/view/screens/onboarding/splash_screen.dart';
 import 'package:enuaniculturalforummobile/view_model/theme_view_model.dart';
 import 'package:flutter/material.dart';

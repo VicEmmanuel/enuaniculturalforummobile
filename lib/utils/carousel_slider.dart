@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:enuaniculturalforummobile/src/config.dart';
 import 'package:enuaniculturalforummobile/src/utils.dart';
 import 'package:enuaniculturalforummobile/view/screens/dashboard/home_screen/blog_details_screen.dart';
@@ -58,7 +59,7 @@ class CarouselWithIndicators extends ConsumerStatefulWidget {
 class _CarouselWithIndicatorsState
     extends ConsumerState<CarouselWithIndicators> {
   int _currentIndex = 0;
-  CarouselController _controller = CarouselController();
+  CarouselSliderController _controller = CarouselSliderController();
   late Timer _timer;
   bool _isLoadingFuture = true;
 
@@ -122,8 +123,10 @@ class _CarouselWithIndicatorsState
                               .toString(),
                           imagePath: postProvider
                               .postResponseModel!.data!.posts![index].filePath
-                              .toString(), slug: postProvider
-                            .postResponseModel!.data!.posts![index].slug.toString(),
+                              .toString(),
+                          slug: postProvider
+                              .postResponseModel!.data!.posts![index].slug
+                              .toString(),
                         ));
                   },
                   child: Column(
@@ -133,7 +136,7 @@ class _CarouselWithIndicatorsState
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.r),
                           image: DecorationImage(
-                            image: NetworkImage(postProvider
+                            image: CachedNetworkImageProvider(postProvider
                                 .postResponseModel!.data!.posts![index].filePath
                                 .toString()),
                             fit: BoxFit.cover,
@@ -146,11 +149,7 @@ class _CarouselWithIndicatorsState
                               Positioned(
                                 bottom: 10,
                                 right: 10,
-                                child: InkWell(
-                                  onTap: () {
-                                    //navigate
-                                  },
-                                ),
+                                child: Container(),
                               ),
                             ],
                           ),
